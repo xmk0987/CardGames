@@ -1,0 +1,38 @@
+.players {
+  height: 100px;
+  width: 100%;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  overflow-x: scroll;
+}
+
+.player {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  justify-content: center;
+}
+
+.player p {
+  font-size: 20px;
+  padding: 5px;
+}
+
+.ready {
+  text-decoration-color: green !important;
+  color: green !important;
+}
+
+.notReady {
+  color: red;
+  text-decoration-color: red;
+}
+
+.you {
+  color: var(--accent-color);
+  text-decoration: underline;
+  text-decoration-thickness: 3px;
+  text-underline-offset: 4px;
+}

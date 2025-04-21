@@ -1,0 +1,27 @@
+.popup {
+  position: absolute;
+  width: var(--popup-width);
+  min-height: 100px;
+  max-height: var(--popup-height);
+  background-color: var(--secondary-color);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: var(--shadow);
+  border-radius: var(--radius);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 10px;
+}
+
+.close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}
+
+.close:hover {
+  opacity: 0.8;
+}

@@ -1,0 +1,59 @@
+.container {
+  flex-grow: 1;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pyramidContainer {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: hidden;
+  gap: 2px;
+  padding-bottom: 5px;
+  min-height: 300px;
+  max-height: 600px;
+}
+
+.pyramid {
+  position: relative;
+  display: inline-block;
+  height: 100%;
+  min-width: 50px;
+  overflow: hidden;
+}
+
+.pyramid img {
+  width: 100%;
+  height: auto;
+  position: absolute;
+  max-height: 100%;
+  top: 0;
+  left: 0;
+}
+
+/* Offset each subsequent image to the right */
+.pyramid img:nth-child(2) {
+  top: 17px; /* Adjust the value as needed */
+}
+
+.pyramid img:nth-child(3) {
+  top: 34px; /* Adjust the value as needed */
+}
+
+.pyramid img:nth-child(4) {
+  top: 51px; /* Adjust the value as needed */
+}
+
+.pyramidRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: calc(100% / 5); /* Adjust to fit 5 rows within the available height */
+  position: relative;
+  gap: 5px;
+}

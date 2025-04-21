@@ -1,0 +1,51 @@
+.drinks {
+  width: 100%;
+  flex-grow: 1;
+  overflow: scroll;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.drink {
+  display: inline-flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.drinkAmount {
+  display: inline-flex;
+  align-items: center;
+}
+
+.drink img {
+  height: 50px;
+  width: auto;
+}
+
+.you {
+  color: var(--accent-color);
+}
+
+.showDrinks {
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  border: 1px solid black;
+  border-radius: 50%;
+  box-shadow: var(--shadow);
+  background-color: var(--secondary-color);
+}
+
+.showDrinks img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.showDrinks:hover {
+  background-color: var(--accent-color3);
+  color: black;
+}

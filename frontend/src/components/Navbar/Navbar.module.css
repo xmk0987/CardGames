@@ -1,0 +1,32 @@
+.navbar {
+  position: fixed;
+  height: var(--navbar-height);
+  width: 100%;
+  background-color: var(--secondary-color);
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  z-index: 10;
+  position: relative;
+}
+
+.navbar p {
+  font-size: 24px;
+  color: white;
+  text-shadow: var(--text-shadow);
+}
+
+.navbar button {
+  font-size: var(--nav-font-size);
+  color: var(--accent-color);
+}
+
+.navbar button:hover {
+  color: var(--accent-color3);
+}
+
+.navbar ul {
+  display: inline-flex;
+  gap: 2rem;
+  list-style: none;
+}

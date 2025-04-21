@@ -1,0 +1,13 @@
+.button {
+  font-size: var(--card-button-font-size);
+  background-color: black;
+  color: yellow;
+  width: 150px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.button:hover {
+  background-color: var(--accent-color3);
+  color: black;
+}

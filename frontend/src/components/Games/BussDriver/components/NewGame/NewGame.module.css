@@ -1,0 +1,17 @@
+
+.showDrinks {
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  border: 1px solid black;
+  border-radius: 50%;
+  box-shadow: var(--shadow);
+  background-color: var(--secondary-color);
+}
+
+.showDrinks:hover {
+  background-color: var(--accent-color3);
+  color: black;
+}

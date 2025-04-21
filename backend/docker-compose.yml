@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+  GetDrunkMongo:
+    image: mongo:latest
+    container_name: GetDrunkMongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - getdrunkdata:/data/db
+
+volumes:
+  getdrunkdata:
+    driver: local
