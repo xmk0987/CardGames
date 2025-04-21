@@ -4,10 +4,10 @@ const registerLobbyHandlers = require("./lobbyHandlers");
 const Game = require("../models/Game");
 
 // Game socket handlers
-const registerBussDriverHandlers = require("./games/BussDriver");
+const registerBusDriverHandlers = require("./games/BusDriver");
 
 const gameHandlers = {
-  bussDriver: registerBussDriverHandlers,
+  busDriver: registerBusDriverHandlers,
 };
 
 function initializeSocket(server, options) {

@@ -1,4 +1,4 @@
-import BussDriver from "../../components/Games/BussDriver/BussDriver";
+import BusDriver from "../../components/Games/BusDriver/BusDriver";
 import RulesPopup from "../../components/Rules/RulesPopup";
 import { useGameState } from "../../context/gameState/useGameState";
 import styles from "./GameRouter.module.css";
@@ -8,8 +8,8 @@ const GameRouter = () => {
 
   const renderGameComponent = () => {
     switch (gameInfo.route) {
-      case "bussDriver":
-        return <BussDriver />;
+      case "busDriver":
+        return <BusDriver />;
       default:
         return <div>Game not found</div>;
     }

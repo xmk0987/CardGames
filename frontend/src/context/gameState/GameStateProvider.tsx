@@ -5,7 +5,7 @@ import { games } from "../../lib/games";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import {
-  BussDriverGameState,
+  BusDriverGameState,
   GameState,
   LobbyPlayer,
 } from "../../types/game.types";
@@ -105,7 +105,7 @@ export const GameStateProvider: React.FC<{ children: React.ReactNode }> = ({
   useEffect(() => {
     if (!socket || !gameId) return;
 
-    const handleStateUpdated = (newState: BussDriverGameState) => {
+    const handleStateUpdated = (newState: BusDriverGameState) => {
       queryClient.setQueryData(["gameState", gameId], (oldData: GameState) => {
         if (!oldData) return;
         return { ...oldData, state: newState };
@@ -132,7 +132,7 @@ export const GameStateProvider: React.FC<{ children: React.ReactNode }> = ({
         gameInfo,
         player,
         gameId,
-        gameState: onGoingGame.state as BussDriverGameState,
+        gameState: onGoingGame.state as BusDriverGameState,
         players: sortedPlayers,
       }}
     >

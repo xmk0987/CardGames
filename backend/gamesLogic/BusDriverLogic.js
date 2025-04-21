@@ -1,10 +1,10 @@
-// games/BussDriverLogic.js
+// games/BusDriverLogic.js
 
 const { getNewDeck, drawACard, returnAllCardsToDeck } = require("../deckApi");
 
 const PYRAMID_CARDS_AMOUNT = 15;
 
-class BussDriverLogic {
+class BusDriverLogic {
   constructor(gameDoc) {
     this.gameDoc = gameDoc || {};
     this.state = gameDoc?.state || this.defaultState();
@@ -14,7 +14,7 @@ class BussDriverLogic {
     return {
       deckId: "",
       round: 0,
-      bussDriver: null,
+      busDriver: null,
       pyramid: [],
       drinkAmount: 2,
       turnedCards: {},
@@ -120,7 +120,7 @@ class BussDriverLogic {
   }
 
   async handlePlayCard(data) {
-    if (this.state.bussDriver) {
+    if (this.state.busDriver) {
       await this.playBonusCard(data);
     } else {
       const { drinkDistribution, card, player } = data;
@@ -212,9 +212,9 @@ class BussDriverLogic {
     // Find loser
     if (!reset) {
       const loser = this.determineLoser();
-      this.state.bussDriver = loser;
+      this.state.busDriver = loser;
       this.state.drinkAmount = 0;
-      this.state.message = `${this.state.bussDriver.username} is the bussdriver`;
+      this.state.message = `${this.state.busDriver.username} is the BUS DRIVER`;
     }
 
     // Reset deck
@@ -240,7 +240,7 @@ class BussDriverLogic {
 
     console.log("Failed bonus", failCardValues.includes(card.value));
     if (failCardValues.includes(card.value)) {
-      this.state.message = `${this.state.bussDriver.username} has to drink ${this.state.round}`;
+      this.state.message = `${this.state.busDriver.username} has to drink ${this.state.round}`;
       this.state.drinkAmount += this.state.round;
       this.state.failedBonus = true;
     } else {
@@ -282,4 +282,4 @@ class BussDriverLogic {
   }
 }
 
-module.exports = BussDriverLogic;
+module.exports = BusDriverLogic;

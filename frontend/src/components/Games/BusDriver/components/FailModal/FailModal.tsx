@@ -5,12 +5,12 @@ import PrimaryButton from "../../../../PrimaryButton/PrimaryButton";
 import ModalLayout from "../../../../../layouts/ModalLayout/ModalLayout";
 
 interface FailModalProps {
-  isBussDriver: boolean;
+  isBusDriver: boolean;
   resetBonusRound: () => void;
 }
 
 const FailModal: React.FC<FailModalProps> = ({
-  isBussDriver,
+  isBusDriver,
   resetBonusRound,
 }) => {
   const { gameState } = useGameState();
@@ -30,7 +30,7 @@ const FailModal: React.FC<FailModalProps> = ({
         <ModalLayout onClose={() => setShowFailModal(false)}>
           <h2>FAILED</h2>
           {gameState.message}
-          {isBussDriver && (
+          {isBusDriver && (
             <PrimaryButton text="GO AGAIN" onClick={resetBonusRound} />
           )}
         </ModalLayout>

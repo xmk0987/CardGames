@@ -1,7 +1,7 @@
 import { Socket } from "socket.io-client";
 import type {
   BUSDRIVER_GAME_ACTIONS,
-  BussDriverGameState,
+  BusDriverGameState,
   GamePlayer,
   LobbyPlayer,
 } from "./game.types";
@@ -19,7 +19,7 @@ export interface ServerToClientEvents {
   lobbyFull: (data: { message: string }) => void;
   adminPromoted: (data: { message: string; user: LobbyPlayer }) => void;
   gameStarted: () => void;
-  stateUpdated: (gameState: BussDriverGameState) => void;
+  stateUpdated: (gameState: BusDriverGameState) => void;
   playerLeft: (data: { playerId: string }) => void;
 
   // BusDriver actions

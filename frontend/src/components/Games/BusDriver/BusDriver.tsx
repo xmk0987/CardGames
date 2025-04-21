@@ -11,13 +11,13 @@ import SharedDrinks from "./components/SharedDrinks/SharedDrinks";
 import { useSocket } from "../../../context/socket/useSocket";
 import { useGameState } from "../../../context/gameState/useGameState";
 import BonusPyramid from "./components/Pyramid/BonusPyramid";
-import styles from "./BussDriver.module.css";
+import styles from "./BusDriver.module.css";
 import FailModal from "./components/FailModal/FailModal";
 import NewGame from "./components/NewGame/NewGame";
 import { useNavigate } from "react-router";
 import LeaveGame from "../../LeaveGame/LeaveGame";
 
-const BussDriver = () => {
+const BusDriver = () => {
   const socket = useSocket();
   const { player, gameState, gameId } = useGameState();
   const { readyPlayers } = gameState;
@@ -84,12 +84,12 @@ const BussDriver = () => {
     );
   };
 
-  const isBussDriver = player.id === gameState?.bussDriver?.id;
+  const isBusDriver = player.id === gameState?.busDriver?.id;
 
   const handlePlayBonusCard = (card: Card) => {
     if (
       loading ||
-      !isBussDriver ||
+      !isBusDriver ||
       gameState.failedBonus ||
       gameState.status !== "bonus"
     )
@@ -110,7 +110,7 @@ const BussDriver = () => {
   const handleResetBonusRound = () => {
     if (
       loading ||
-      !isBussDriver ||
+      !isBusDriver ||
       !gameState.failedBonus ||
       gameState.status !== "bonus"
     )
@@ -181,11 +181,11 @@ const BussDriver = () => {
           )}
           <BonusPyramid
             playBonusCard={handlePlayBonusCard}
-            isBussDriver={isBussDriver}
+            isBusDriver={isBusDriver}
           />
-          {gameState.failedBonus && isBussDriver && (
+          {gameState.failedBonus && isBusDriver && (
             <FailModal
-              isBussDriver={isBussDriver}
+              isBusDriver={isBusDriver}
               resetBonusRound={handleResetBonusRound}
             />
           )}
@@ -199,4 +199,4 @@ const BussDriver = () => {
   );
 };
 
-export default BussDriver;
+export default BusDriver;

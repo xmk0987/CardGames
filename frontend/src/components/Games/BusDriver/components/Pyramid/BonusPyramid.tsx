@@ -4,12 +4,12 @@ import { Card } from "../../../../../types/game.types";
 
 interface BonusPyramidProps {
   playBonusCard: (card: Card) => void;
-  isBussDriver: boolean;
+  isBusDriver: boolean;
 }
 
 const BonusPyramid: React.FC<BonusPyramidProps> = ({
   playBonusCard,
-  isBussDriver,
+  isBusDriver,
 }) => {
   const { gameState } = useGameState();
   const { pyramid, turnedCards } = gameState;
@@ -23,9 +23,7 @@ const BonusPyramid: React.FC<BonusPyramidProps> = ({
   };
 
   const isRowOpen = (row: number) => {
-    return (
-      gameState.round - 1 === row && isBussDriver && !gameState.failedBonus
-    );
+    return gameState.round - 1 === row && isBusDriver && !gameState.failedBonus;
   };
 
   let cardIndex = 0;

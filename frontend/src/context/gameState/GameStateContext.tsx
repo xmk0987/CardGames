@@ -2,17 +2,17 @@ import { createContext } from "react";
 import {
   Game,
   GameState,
-  BussDriverGameState,
+  BusDriverGameState,
   GamePlayer,
 } from "../../types/game.types";
 
 interface GameStateContextProps {
   onGoingGame: Omit<GameState, "state" | "players"> & {
-    state: BussDriverGameState;
+    state: BusDriverGameState;
   };
   gameInfo: Game;
   player: GamePlayer;
-  gameState: BussDriverGameState;
+  gameState: BusDriverGameState;
   players: GamePlayer[];
   gameId: string;
 }

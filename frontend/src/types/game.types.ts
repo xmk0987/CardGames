@@ -14,7 +14,7 @@ export interface GameState {
   _id: string;
   gameType: string;
   players: GamePlayer[];
-  state: BussDriverGameState;
+  state: BusDriverGameState;
   createdAt: string;
   updatedAt: string;
 }
@@ -25,11 +25,11 @@ export interface GamePlayer {
   isAdmin: boolean;
 }
 
-export interface BussDriverGameState {
+export interface BusDriverGameState {
   deckId: string;
   message: string;
   round: number;
-  bussDriver: GamePlayer | null;
+  busDriver: GamePlayer | null;
   status: "bonus" | "game" | "finished";
   failedBonus: boolean;
   pyramid: Card[];

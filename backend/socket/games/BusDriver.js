@@ -1,8 +1,8 @@
-// socket/games/BussDriver.js
-const BussDriverLogic = require("../../gamesLogic/BussDriverLogic");
+// socket/games/BusDriver.js
+const BusDriverLogic = require("../../gamesLogic/BusDriverLogic");
 const Game = require("../../models/Game");
 
-function registerBussDriverHandlers() {
+function registerBusDriverHandlers() {
   return {
     /**
      * Called when the game is started from the lobby.
@@ -10,7 +10,7 @@ function registerBussDriverHandlers() {
      */
     async onStart(players) {
       try {
-        const logic = new BussDriverLogic();
+        const logic = new BusDriverLogic();
         return logic.startGame(players);
       } catch (error) {
         console.log(error);
@@ -21,7 +21,7 @@ function registerBussDriverHandlers() {
      * Handles player actions during gameplay.
      */
     async onPlayerAction(io, game, action, data, callback) {
-      const logic = new BussDriverLogic(game);
+      const logic = new BusDriverLogic(game);
 
       try {
         const updatedState = await logic.handlePlayerAction(action, data);
@@ -39,4 +39,4 @@ function registerBussDriverHandlers() {
   };
 }
 
-module.exports = registerBussDriverHandlers();
+module.exports = registerBusDriverHandlers();

@@ -1,7 +1,5 @@
-import spinTheBottleImage from "../assets/images/games/spinthebottle.webp";
-import bussDriverImage from "../assets/images/games/bussdriver.webp";
+import busDriverImage from "../assets/images/games/busdriver.webp";
 import ringOfFireImage from "../assets/images/games/ringoffire.webp";
-import thirtyShotsImage from "../assets/images/games/30min30shot.webp";
 import horseRaceImage from "../assets/images/games/horserace.webp";
 import drunkDealerImage from "../assets/images/games/drunkDealer.webp";
 import type { Game } from "../types/game.types";
@@ -13,27 +11,11 @@ export interface Games {
 
 // Type the games object with the Games interface
 export const games: Games = {
-  spinTheBottle: {
-    name: "SPIN THE BOTTLE",
-    image: spinTheBottleImage,
-    desc: "The old classic. We provide the bottle.",
-    minPlayers: 3,
-    maxPlayers: Infinity,
-    route: "spinTheBottle",
-    rules: [
-      "Go sit around the device in a circle.",
-      "Press the bottle to spin it.",
-      "The player that the bottle points to chooses a truth or a dare.",
-      "Other players come up with a truth or a dare. (You can use premade ones also if you can't come up with anything)",
-      "The player either completes task OR drinks X amount of sips.",
-      "The bottle is spinned again.",
-    ],
-  },
   fuckTheDealer: {
     name: "F*CK THE DEALER",
     image: drunkDealerImage,
-    desc: "Lets bend over the house for once.",
-    minPlayers: 3,
+    desc: "House doesn't always win.",
+    minPlayers: 2,
     maxPlayers: 10,
     route: "fuckTheDealer",
     rules: [
@@ -48,13 +30,13 @@ export const games: Games = {
       "When 1/3 of the pack is left you can remove the second guess option if you like.",
     ],
   },
-  bussDriver: {
-    name: "BUSS DRIVER",
-    image: bussDriverImage,
-    desc: "Can you drive the bus? Hopefully you don't have to.",
+  busDriver: {
+    name: "BUS DRIVER",
+    image: busDriverImage,
+    desc: "Have you driven the bus?",
     minPlayers: 2,
     maxPlayers: 6,
-    route: "bussDriver",
+    route: "busDriver",
     rules: [
       "Make a pyramid of cards 5 at the bottom 1 at the top.",
       "Deal the rest of the pack between members equally.",
@@ -64,14 +46,14 @@ export const games: Games = {
       "The first row one card is worth 2 sips, the next row 4, the third row 6, etc...",
       "You don't have to play a card and can save it for the better rows.",
       "You can place multiple cards at the same time if you have them.",
-      "Bussdriver is the person with the most cards in the end of the game after top card of pyramid is played. Bussdriver gets a bonus round.",
-      "On ties deal single cards to tied players and the smallest card becomes bussdriver",
+      "Bus driver is the person with the most cards in the end of the game after top card of pyramid is played. Bus driver gets a bonus round.",
+      "On ties deal single cards to tied players and the smallest card becomes bus driver",
       "BONUS ROUND: Make similar pyramid as in the start.",
-      "The bussdriver has to get to the top of pyramid without hitting J,Q,K,A.",
-      "The bussdriver opens one card of his choosing from each row of the pyramid.",
+      "The bus driver has to get to the top of pyramid without hitting J,Q,K,A.",
+      "The bus driver opens one card of his choosing from each row of the pyramid.",
       "If the card is one of J,Q,K,A drink sips of the row number the card was on.",
-      "Replace all cards and the bussdriver goes back to the start.",
-      "Repeat this until the bussdriver chooses a card from each row without hitting a face card.",
+      "Replace all cards and the bus driver goes back to the start.",
+      "Repeat this until the bus driver chooses a card from each row without hitting a face card.",
     ],
   },
   ringOfFire: {
@@ -103,19 +85,6 @@ export const games: Games = {
       "Jack (J): 'Make a Rule' - The player who drew the card creates a new rule that must be followed for the rest of the game. Anyone who breaks the rule drinks.",
       "Queen (Q): 'Question Master' - The player who drew the card becomes the Question Master. They can ask questions, and if another player answers any of their questions, that player must drink. This lasts until another Queen is drawn.",
       "King (K): 'King's Cup' - The first three players to draw a King pour some of their drink into the King's Cup. The player who draws the fourth King must drink the entire King's Cup.",
-    ],
-  },
-  thirtyShots: {
-    name: "30 SHOTS",
-    image: thirtyShotsImage,
-    desc: "Can you burp.",
-    minPlayers: 1,
-    maxPlayers: Infinity,
-    route: "thirtyShots",
-    rules: [
-      "Set a timer of 30 minutes",
-      "Every minute take a shot.",
-      "Normal people take a shot of like beer, but if you choose to take heavier shots thats on you.",
     ],
   },
   horseTrack: {
