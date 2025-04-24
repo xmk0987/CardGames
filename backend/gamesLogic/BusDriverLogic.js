@@ -28,7 +28,6 @@ class BusDriverLogic {
   }
 
   async startGame(players) {
-    console.log("Start game");
     this.gameDoc.players = players;
     await this.initializeDecks();
     return this.state;

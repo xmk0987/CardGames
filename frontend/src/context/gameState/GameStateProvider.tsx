@@ -1,14 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { GameStateContext } from "./GameStateContext";
 import { useNavigate, useParams } from "react-router-dom";
 import { games } from "../../lib/games";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import {
-  BusDriverGameState,
-  GameState,
-  LobbyPlayer,
-} from "../../types/game.types";
+import { AllGameStates, GameState, LobbyPlayer } from "../../types/game.types";
 import { useSocket } from "../../context/socket/useSocket";
 
 export const GameStateProvider: React.FC<{ children: React.ReactNode }> = ({
@@ -20,6 +17,7 @@ export const GameStateProvider: React.FC<{ children: React.ReactNode }> = ({
   const { gameName, gameId } = useParams();
   const [player, setPlayer] = useState<LobbyPlayer | null>(null);
   const hasReconnected = useRef(false); // Prevent infinite reconnect attempts
+  const [loading, setLoading] = useState<boolean>(false);
 
   const gameInfo = gameName ? games[gameName as keyof typeof games] : null;
 
@@ -86,37 +84,78 @@ export const GameStateProvider: React.FC<{ children: React.ReactNode }> = ({
       navigate(`/lobby/${gameName}`);
     };
 
-    const handlePlayerLeft = (data: { playerId: string }) => {
-      onGoingGame?.players.filter((p) => p.id !== data.playerId);
-    };
-
     socket.on("reconnectSuccess", handleSuccess);
     socket.on("reconnectFailed", handleFailure);
-    socket.on("playerLeft", handlePlayerLeft);
 
     return () => {
       socket.off("reconnectSuccess", handleSuccess);
       socket.off("reconnectFailed", handleFailure);
-      socket.off("playerLeft", handlePlayerLeft);
     };
-  }, [socket, gameId, player, navigate, gameName, onGoingGame?.players]);
+  }, [socket, gameId, player, navigate, gameName, queryClient]);
 
   // Sync state updates
   useEffect(() => {
     if (!socket || !gameId) return;
 
-    const handleStateUpdated = (newState: BusDriverGameState) => {
+    const handleStateUpdated = (newState: AllGameStates) => {
       queryClient.setQueryData(["gameState", gameId], (oldData: GameState) => {
         if (!oldData) return;
         return { ...oldData, state: newState };
       });
     };
 
+    const handlePlayerLeft = (data: { playerId: string }) => {
+      console.log("Player left", data);
+      queryClient.setQueryData(
+        ["gameState", gameId],
+        (oldData: GameState | undefined) => {
+          if (!oldData) return oldData;
+          return {
+            ...oldData,
+            players: oldData.players.filter((p) => p.id !== data.playerId),
+          };
+        }
+      );
+    };
+
     socket.on("stateUpdated", handleStateUpdated);
+    socket.on("playerLeft", handlePlayerLeft);
+
     return () => {
       socket.off("stateUpdated", handleStateUpdated);
+      socket.off("playerLeft", handlePlayerLeft);
     };
   }, [socket, gameId, queryClient]);
+
+  const leaveGame = () => {
+    if (loading || !gameId || !player) return;
+
+    socket.emit("leaveGame", gameId, player, (_res: { success: boolean }) => {
+      setLoading(false);
+      navigate("/games");
+    });
+  };
+
+  const resetGame = () => {
+    if (
+      loading ||
+      !player?.isAdmin ||
+      !gameId ||
+      onGoingGame?.state?.status !== "finished"
+    )
+      return;
+
+    setLoading(true);
+    socket.emit(
+      "playerAction",
+      gameId,
+      "RESET_GAME",
+      {},
+      (_res: { success: boolean }) => {
+        setLoading(false);
+      }
+    );
+  };
 
   if (isLoading) return <div>Loading game...</div>;
   if (isError) return <div>Error loading game state</div>;
@@ -131,8 +170,10 @@ export const GameStateProvider: React.FC<{ children: React.ReactNode }> = ({
         onGoingGame,
         gameInfo,
         player,
+        leaveGame,
+        resetGame,
         gameId,
-        gameState: onGoingGame.state as BusDriverGameState,
+        gameState: onGoingGame.state as AllGameStates,
         players: sortedPlayers,
       }}
     >

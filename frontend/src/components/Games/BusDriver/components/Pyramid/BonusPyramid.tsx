@@ -1,6 +1,6 @@
 import styles from "./Pyramid.module.css";
-import { useGameState } from "../../../../../context/gameState/useGameState";
 import { Card } from "../../../../../types/game.types";
+import { useBusDriverGameState } from "../../../../../hooks/useBussDriverGameState";
 
 interface BonusPyramidProps {
   playBonusCard: (card: Card) => void;
@@ -11,7 +11,7 @@ const BonusPyramid: React.FC<BonusPyramidProps> = ({
   playBonusCard,
   isBusDriver,
 }) => {
-  const { gameState } = useGameState();
+  const { gameState } = useBusDriverGameState();
   const { pyramid, turnedCards } = gameState;
 
   const totalRows: number = 5;

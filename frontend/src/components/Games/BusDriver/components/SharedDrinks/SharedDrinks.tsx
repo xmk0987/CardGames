@@ -1,16 +1,16 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import styles from "./SharedDrinks.module.css";
 import giveBeerImage from "../../../../../assets/images/giveBeer.png";
-import { useGameState } from "../../../../../context/gameState/useGameState";
 import PrimaryButton from "../../../../PrimaryButton/PrimaryButton";
 import ModalLayout from "../../../../../layouts/ModalLayout/ModalLayout";
+import { useBusDriverGameState } from "../../../../../hooks/useBussDriverGameState";
 
 interface SharedDrinksProps {
   handleNextTurn: () => void;
 }
 
 const SharedDrinks: React.FC<SharedDrinksProps> = ({ handleNextTurn }) => {
-  const { player, gameState, players } = useGameState();
+  const { player, gameState, players } = useBusDriverGameState();
   const { drinkHistory, readyPlayers } = gameState;
   const [showDrinks, setShowDrinks] = useState<boolean>(false);
   const prevDrinkTotal = useRef<number>(0);
@@ -79,7 +79,7 @@ const SharedDrinks: React.FC<SharedDrinksProps> = ({ handleNextTurn }) => {
               <p>No drinks shared!</p>
             )}
           </div>
-          {player.isAdmin && isAllReady && (
+          {player.isAdmin /* && isAllReady  */ && (
             <PrimaryButton text="Next Turn" onClick={handleNextTurn} />
           )}
         </ModalLayout>

@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 import styles from "./NewGame.module.css";
 import PrimaryButton from "../../../../PrimaryButton/PrimaryButton";
 import ModalLayout from "../../../../../layouts/ModalLayout/ModalLayout";
-import { useBusDriverGameState } from "../../../../../hooks/useBussDriverGameState";
+import { useFuckTheDealerGameState } from "../../../../../hooks/useFuckTheDealerGameState";
 
 const NewGame = () => {
-  const { gameState, player, resetGame, leaveGame } = useBusDriverGameState();
+  const { gameState, player, resetGame, leaveGame } =
+    useFuckTheDealerGameState();
   const [showNewGame, setShowNewGame] = useState<boolean>(false);
 
   useEffect(() => {

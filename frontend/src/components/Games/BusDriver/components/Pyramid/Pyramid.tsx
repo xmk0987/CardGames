@@ -1,8 +1,8 @@
 import styles from "./Pyramid.module.css";
-import { useGameState } from "../../../../../context/gameState/useGameState";
+import { useBusDriverGameState } from "../../../../../hooks/useBussDriverGameState";
 
 const Pyramid = () => {
-  const { gameState } = useGameState();
+  const { gameState } = useBusDriverGameState();
   const { pyramid, turnedCards } = gameState;
 
   const totalRows: number = 5;

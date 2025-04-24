@@ -15,6 +15,16 @@ export const mapCardValueToNumber = (value: string): number => {
   return cardValues[value] || parseInt(value, 10);
 };
 
+export const mapNumberToCardValue = (value: number) => {
+  const cardValues: Record<number, string> = {
+    1: "ACE",
+    11: "JACK",
+    12: "QUEEN",
+    13: "KING",
+  };
+  return cardValues[value] || value.toString();
+};
+
 function cardValue(cardCode: string): number {
   const cardValues: { [key: string]: number } = {
     A: 1,

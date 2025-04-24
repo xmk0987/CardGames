@@ -1,0 +1,16 @@
+.messageBtn {
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  border: 1px solid black;
+  border-radius: 50%;
+  box-shadow: var(--shadow);
+  background-color: var(--secondary-color);
+}
+
+.messageBtn:hover {
+  background-color: var(--accent-color3);
+  color: black;
+}

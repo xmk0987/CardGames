@@ -9,19 +9,17 @@ import SendDrinks, {
 } from "./components/SendDrinks/SendDrinks";
 import SharedDrinks from "./components/SharedDrinks/SharedDrinks";
 import { useSocket } from "../../../context/socket/useSocket";
-import { useGameState } from "../../../context/gameState/useGameState";
 import BonusPyramid from "./components/Pyramid/BonusPyramid";
 import styles from "./BusDriver.module.css";
 import FailModal from "./components/FailModal/FailModal";
 import NewGame from "./components/NewGame/NewGame";
-import { useNavigate } from "react-router";
 import LeaveGame from "../../LeaveGame/LeaveGame";
+import { useBusDriverGameState } from "../../../hooks/useBussDriverGameState";
 
 const BusDriver = () => {
   const socket = useSocket();
-  const { player, gameState, gameId } = useGameState();
+  const { player, gameState, gameId, leaveGame } = useBusDriverGameState();
   const { readyPlayers } = gameState;
-  const navigate = useNavigate();
 
   const [playingCard, setPlayingCard] = useState<Card | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -48,7 +46,7 @@ const BusDriver = () => {
   };
 
   const handlePlayCard = (drinks: DrinkDistributionType) => {
-    if (loading) return;
+    if (loading || isReady(player)) return;
 
     setLoading(true);
     const data = {
@@ -128,30 +126,6 @@ const BusDriver = () => {
     );
   };
 
-  const handleResetGame = () => {
-    if (loading || gameState.status !== "finished" || !player.isAdmin) return;
-
-    setLoading(true);
-    socket.emit(
-      "playerAction",
-      gameId,
-      "RESET_GAME",
-      {},
-      (_res: { success: boolean }) => {
-        setLoading(false);
-      }
-    );
-  };
-
-  const leaveGame = () => {
-    if (loading) return;
-
-    socket.emit("leaveGame", gameId, player, (_res: { success: boolean }) => {
-      setLoading(false);
-      navigate("/games");
-    });
-  };
-
   return (
     <div className={styles.container}>
       <LeaveGame leaveGame={leaveGame} />
@@ -190,9 +164,7 @@ const BusDriver = () => {
             />
           )}
           <div className={styles.totalCounter}>x{gameState.drinkAmount}</div>
-          {gameState.status === "finished" && (
-            <NewGame resetGame={handleResetGame} leaveGame={leaveGame} />
-          )}
+          {gameState.status === "finished" && <NewGame />}
         </>
       )}
     </div>

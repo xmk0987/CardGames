@@ -89,3 +89,7 @@ main {
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 9999;
 }
+
+.masked {
+  filter: grayscale(100%) opacity(0.5); /* Example: grayscale and semi-transparent */
+}

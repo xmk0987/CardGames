@@ -1,0 +1,36 @@
+.container {
+  flex-grow: 1;
+  width: 100%;
+  padding: 10px;
+  overflow: hidden;
+}
+
+.header {
+  display: inline-flex;
+  width: 100%;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.cardStacks {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  overflow: scroll;
+  height: 100%;
+  padding-bottom: 50px;
+}
+
+.cardStack {
+  position: relative;
+  width: 60px;
+  height: 130px;
+}
+
+.card {
+  position: absolute;
+  width: 60px;
+  height: auto;
+  transition: transform 0.2s ease;
+}

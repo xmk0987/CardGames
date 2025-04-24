@@ -1,14 +1,14 @@
 import React from "react";
 import type { GamePlayer } from "../../../../../types/game.types";
 import styles from "./Players.module.css";
-import { useGameState } from "../../../../../context/gameState/useGameState";
+import { useBusDriverGameState } from "../../../../../hooks/useBussDriverGameState";
 
 interface PlayersProps {
   isReady: (player: GamePlayer) => boolean;
 }
 
 const Players: React.FC<PlayersProps> = ({ isReady }) => {
-  const { players, player } = useGameState();
+  const { players, player } = useBusDriverGameState();
 
   return (
     <div className={styles.players}>

@@ -5,9 +5,11 @@ const Game = require("../models/Game");
 
 // Game socket handlers
 const registerBusDriverHandlers = require("./games/BusDriver");
+const registerFuckTheDealerHandlers = require("./games/FuckTheDealer");
 
 const gameHandlers = {
   busDriver: registerBusDriverHandlers,
+  fuckTheDealer: registerFuckTheDealerHandlers,
 };
 
 function initializeSocket(server, options) {
@@ -36,6 +38,7 @@ function initializeSocket(server, options) {
     });
 
     socket.on("leaveGame", async (gameId, player, callback) => {
+      console.log("Leaving game", gameId, player);
       try {
         const game = await Game.findById(gameId);
         if (!game) {
@@ -50,6 +53,7 @@ function initializeSocket(server, options) {
             await Game.findByIdAndDelete(gameId);
           }
 
+          console.log("Emitting playerLeft for ", player.id);
           io.to(gameId).emit("playerLeft", { playerId: player.id });
         } else {
           throw new Error("Player not found");

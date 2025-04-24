@@ -3,7 +3,7 @@ import type { Card } from "../../../../../types/game.types";
 import styles from "./Hand.module.css";
 import { checkIfEqual } from "../../../../../utils/helpers";
 import { groupCardsByValue } from "../../../../../utils/helpers";
-import { useGameState } from "../../../../../context/gameState/useGameState";
+import { useBusDriverGameState } from "../../../../../hooks/useBussDriverGameState";
 
 interface HandProps {
   isReady: boolean;
@@ -16,7 +16,7 @@ const Hand: React.FC<HandProps> = ({
   handlePlayCard,
   handlePlayerReady,
 }) => {
-  const { gameState, player } = useGameState();
+  const { gameState, player } = useBusDriverGameState();
   const { playerCards, turnedCards } = gameState;
 
   const hand = useMemo(
@@ -31,6 +31,12 @@ const Hand: React.FC<HandProps> = ({
 
   const lastTurnedCard = getLastTurnedCard();
 
+  const playACard = (card: Card) => {
+    if (!isReady) {
+      handlePlayCard(card);
+    }
+  };
+
   return (
     <>
       <section className={styles.handContainer}>
@@ -43,7 +49,7 @@ const Hand: React.FC<HandProps> = ({
                   checkIfEqual(card.code, lastTurnedCard) ? "" : styles.masked
                 }`}
                 disabled={!checkIfEqual(card.code, lastTurnedCard)}
-                onClick={() => handlePlayCard(card)}
+                onClick={() => playACard(card)}
               >
                 <img src={card.image} alt={card.code} />
               </button>

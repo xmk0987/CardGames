@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import styles from "./FailModal.module.css";
-import { useGameState } from "../../../../../context/gameState/useGameState";
 import PrimaryButton from "../../../../PrimaryButton/PrimaryButton";
 import ModalLayout from "../../../../../layouts/ModalLayout/ModalLayout";
+import { useBusDriverGameState } from "../../../../../hooks/useBussDriverGameState";
 
 interface FailModalProps {
   isBusDriver: boolean;
@@ -13,7 +13,7 @@ const FailModal: React.FC<FailModalProps> = ({
   isBusDriver,
   resetBonusRound,
 }) => {
-  const { gameState } = useGameState();
+  const { gameState } = useBusDriverGameState();
   const [showFailModal, setShowFailModal] = useState<boolean>(false);
 
   useEffect(() => {

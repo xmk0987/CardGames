@@ -1,4 +1,3 @@
-// Map card value to number
 function mapCardValueToNumber(value) {
   const valueMapping = {
     ACE: 1,

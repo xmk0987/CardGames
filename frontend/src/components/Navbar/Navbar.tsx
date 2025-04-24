@@ -1,22 +1,14 @@
 import { useNavigate } from "react-router";
 import styles from "./Navbar.module.css";
 
-interface NavBarProps {
-  resetGame?: () => void;
-}
-
-const Navbar: React.FC<NavBarProps> = ({ resetGame }) => {
+const Navbar = () => {
   const navigate = useNavigate();
 
   const handleNavigate = (path: string) => {
-    if (resetGame) {
-      resetGame();
-    }
     navigate(path);
   };
 
   const isHomePage = window.location.pathname === "/";
-  const isGamesPage = window.location.pathname === "/games";
 
   return (
     <nav
@@ -29,12 +21,7 @@ const Navbar: React.FC<NavBarProps> = ({ resetGame }) => {
       <ul>
         {!isHomePage && (
           <li>
-            <button onClick={() => handleNavigate("/")}>Home</button>
-          </li>
-        )}
-        {!isGamesPage && (
-          <li>
-            <button onClick={() => handleNavigate("/games")}>Games</button>
+            <button onClick={() => handleNavigate("/")}>Games</button>
           </li>
         )}
       </ul>

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import styles from "./SendDrinks.module.css";
 import giveBeer from "../../../../../assets/images/giveBeer.png";
-import { useGameState } from "../../../../../context/gameState/useGameState";
 import ModalLayout from "../../../../../layouts/ModalLayout/ModalLayout";
+import { useBusDriverGameState } from "../../../../../hooks/useBussDriverGameState";
 
 interface SendDrinksProps {
   cancelPlayCard: () => void;
@@ -16,7 +16,7 @@ const SendDrinks: React.FC<SendDrinksProps> = ({
 
   handlePlayCard,
 }) => {
-  const { players, gameState, player } = useGameState();
+  const { players, gameState, player } = useBusDriverGameState();
   const { drinkAmount } = gameState;
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [drinkDistribution, setDrinkDistribution] =

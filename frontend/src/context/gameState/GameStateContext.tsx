@@ -1,20 +1,24 @@
+// GameStateContext.ts
 import { createContext } from "react";
 import {
   Game,
-  GameState,
-  BusDriverGameState,
   GamePlayer,
+  AllGameStates,
+  GameState,
+  LobbyPlayer,
 } from "../../types/game.types";
 
-interface GameStateContextProps {
-  onGoingGame: Omit<GameState, "state" | "players"> & {
-    state: BusDriverGameState;
-  };
+export interface GameStateContextProps<
+  T extends AllGameStates = AllGameStates
+> {
+  onGoingGame: GameState;
   gameInfo: Game;
-  player: GamePlayer;
-  gameState: BusDriverGameState;
+  player: LobbyPlayer;
+  gameState: T;
   players: GamePlayer[];
   gameId: string;
+  leaveGame: () => void;
+  resetGame: () => void;
 }
 
 export const GameStateContext = createContext<

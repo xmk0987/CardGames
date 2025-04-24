@@ -1,8 +1,8 @@
 // socket/games/BusDriver.js
-const BusDriverLogic = require("../../gamesLogic/BusDriverLogic");
+const FuckTheDealerLogic = require("../../gamesLogic/FuckTheDealerLogic");
 const Game = require("../../models/Game");
 
-function registerBusDriverHandlers() {
+function registerFuckTheDealerHandlers() {
   return {
     /**
      * Called when the game is started from the lobby.
@@ -10,7 +10,7 @@ function registerBusDriverHandlers() {
      */
     async onStart(players) {
       try {
-        const logic = new BusDriverLogic();
+        const logic = new FuckTheDealerLogic();
         return await logic.startGame(players);
       } catch (error) {
         console.log(error);
@@ -21,7 +21,7 @@ function registerBusDriverHandlers() {
      * Handles player actions during gameplay.
      */
     async onPlayerAction(io, game, action, data, callback) {
-      const logic = new BusDriverLogic(game);
+      const logic = new FuckTheDealerLogic(game);
 
       try {
         const updatedState = await logic.handlePlayerAction(action, data);
@@ -39,4 +39,4 @@ function registerBusDriverHandlers() {
   };
 }
 
-module.exports = registerBusDriverHandlers();
+module.exports = registerFuckTheDealerHandlers();

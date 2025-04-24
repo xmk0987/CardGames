@@ -14,7 +14,7 @@ export interface GameState {
   _id: string;
   gameType: string;
   players: GamePlayer[];
-  state: BusDriverGameState;
+  state: AllGameStates;
   createdAt: string;
   updatedAt: string;
 }
@@ -39,6 +39,29 @@ export interface BusDriverGameState {
   playerCards: Record<string, Card[]>;
   drinkHistory: { giver: string; recipient: string; amount: number }[];
 }
+
+export interface FuckTheDealerGameState {
+  deckId: string;
+  message: string;
+  status: "finished" | "game";
+  dealerTurn: number;
+  usedCards: { [key: string]: Card[] };
+  dealer: GamePlayer;
+  guesser: GamePlayer;
+  cardsLeft: number;
+  currentCard: Card;
+  currentGuess: null | number;
+  isSmallerOrBigger: "smaller" | "bigger" | "firstGuess";
+}
+
+export type GameName = "busDriver" | "fuckTheDealer";
+
+export interface GameStateMap {
+  busDriver: BusDriverGameState;
+  fuckTheDealer: FuckTheDealerGameState;
+}
+
+export type AllGameStates = GameStateMap[keyof GameStateMap];
 
 // ! FIX TYPES
 export interface Card {
