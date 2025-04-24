@@ -6,10 +6,12 @@ const Game = require("../models/Game");
 // Game socket handlers
 const registerBusDriverHandlers = require("./games/BusDriver");
 const registerFuckTheDealerHandlers = require("./games/FuckTheDealer");
+const registerRingOfFireHandlers = require("./games/RingOfFire");
 
 const gameHandlers = {
   busDriver: registerBusDriverHandlers,
   fuckTheDealer: registerFuckTheDealerHandlers,
+  ringOfFire: registerRingOfFireHandlers,
 };
 
 function initializeSocket(server, options) {

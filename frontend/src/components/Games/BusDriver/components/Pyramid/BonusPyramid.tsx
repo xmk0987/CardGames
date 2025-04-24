@@ -1,12 +1,14 @@
 import styles from "./Pyramid.module.css";
 import { Card } from "../../../../../types/game.types";
 import { useBusDriverGameState } from "../../../../../hooks/useBussDriverGameState";
+import { BACK_OF_CARD } from "../../../../../lib/cardImages";
 
 interface BonusPyramidProps {
   playBonusCard: (card: Card) => void;
   isBusDriver: boolean;
 }
 
+// TODO Combine bonus pyramid and pyramid to one component
 const BonusPyramid: React.FC<BonusPyramidProps> = ({
   playBonusCard,
   isBusDriver,
@@ -40,11 +42,7 @@ const BonusPyramid: React.FC<BonusPyramidProps> = ({
               onClick={() => playBonusCard(card)}
             >
               <img
-                src={
-                  isTurned(card.code)
-                    ? card.image
-                    : "https://deckofcardsapi.com/static/img/back.png"
-                }
+                src={isTurned(card.code) ? card.image : BACK_OF_CARD}
                 alt={card.code}
               />
             </button>

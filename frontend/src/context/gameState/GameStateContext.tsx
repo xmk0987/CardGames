@@ -19,6 +19,7 @@ export interface GameStateContextProps<
   gameId: string;
   leaveGame: () => void;
   resetGame: () => void;
+  isYou: (p: GamePlayer) => boolean;
 }
 
 export const GameStateContext = createContext<

@@ -54,10 +54,23 @@ export interface FuckTheDealerGameState {
   isSmallerOrBigger: "smaller" | "bigger" | "firstGuess";
 }
 
-export type GameName = "busDriver" | "fuckTheDealer";
+export interface RingOfFireGameState {
+  deckId: string;
+  message: string;
+  status: "finished" | "game";
+  isChoosingMate: boolean;
+  playerInTurn: GamePlayer;
+  questionMaster: GamePlayer;
+  mates: { [key: string]: GamePlayer[] };
+  cardsLeft: number;
+  currentCard: Card;
+}
+
+export type GameName = "busDriver" | "fuckTheDealer" | "ringOfFire";
 
 export interface GameStateMap {
   busDriver: BusDriverGameState;
+  ringOfFire: RingOfFireGameState;
   fuckTheDealer: FuckTheDealerGameState;
 }
 
@@ -86,9 +99,10 @@ export interface Game {
   rules: string[];
 }
 
-export type BUSDRIVER_GAME_ACTIONS =
+export type GAME_ACTIONS =
   | "READY"
   | "PLAY_CARD"
   | "START_NEXT_TURN"
   | "RESET_BONUS"
-  | "RESET_GAME";
+  | "RESET_GAME"
+  | "SET_MATE";

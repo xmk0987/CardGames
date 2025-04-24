@@ -1,5 +1,6 @@
 import styles from "./Pyramid.module.css";
 import { useBusDriverGameState } from "../../../../../hooks/useBussDriverGameState";
+import { BACK_OF_CARD } from "../../../../../lib/cardImages";
 
 const Pyramid = () => {
   const { gameState } = useBusDriverGameState();
@@ -23,11 +24,7 @@ const Pyramid = () => {
         return (
           <div className={styles.pyramid} key={cardIndex}>
             <img
-              src={
-                isTurned(card.code)
-                  ? card.image
-                  : "https://deckofcardsapi.com/static/img/back.png"
-              }
+              src={isTurned(card.code) ? card.image : BACK_OF_CARD}
               alt={card.code}
             />
             {isTurned(card.code) &&

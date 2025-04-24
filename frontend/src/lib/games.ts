@@ -64,10 +64,6 @@ export const games: Games = {
     maxPlayers: Infinity,
     route: "ringOfFire",
     rules: [
-      "Setup:",
-      "1. Equipment Needed: A standard deck of cards, a large cup placed in the center of the table (referred to as the 'King's Cup'), and drinks for all players.",
-      "2. Initial Setup: Spread the deck of cards in a circle around the King's Cup. All players sit in a circle around the cards and the King's Cup.",
-      "",
       "Gameplay:",
       "1. Drawing Cards: On each player's turn, they draw a card from the circle of cards. The action or rule associated with the drawn card must be followed.",
       "",

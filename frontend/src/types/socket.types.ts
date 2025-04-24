@@ -1,6 +1,6 @@
 import { Socket } from "socket.io-client";
 import type {
-  BUSDRIVER_GAME_ACTIONS,
+  GAME_ACTIONS,
   BusDriverGameState,
   GamePlayer,
   LobbyPlayer,
@@ -38,7 +38,7 @@ export interface ClientToServerEvents {
   ) => void;
   playerAction: (
     gameId: string,
-    action: BUSDRIVER_GAME_ACTIONS,
+    action: GAME_ACTIONS,
     data?: unknown,
     callback?: (response: { success: boolean }) => void
   ) => void;

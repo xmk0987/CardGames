@@ -1,27 +1,20 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styles from "./NewGame.module.css";
-import PrimaryButton from "../../../../PrimaryButton/PrimaryButton";
-import ModalLayout from "../../../../../layouts/ModalLayout/ModalLayout";
-import { useBusDriverGameState } from "../../../../../hooks/useBussDriverGameState";
+import PrimaryButton from "../PrimaryButton/PrimaryButton";
+import ModalLayout from "../../layouts/ModalLayout/ModalLayout";
+import { useGameState } from "../../context/gameState/useGameState";
 
 const NewGame = () => {
-  const { gameState, player, resetGame, leaveGame } = useBusDriverGameState();
+  const { gameState, player, resetGame, leaveGame } = useGameState();
   const [showNewGame, setShowNewGame] = useState<boolean>(false);
 
-  useEffect(() => {
-    if (gameState.status === "finished") {
-      setShowNewGame(true);
-    } else {
-      setShowNewGame(false);
-    }
-  }, [gameState.status]);
+  if (gameState.status !== "finished") return null;
 
   return (
     <>
       {showNewGame ? (
         <ModalLayout onClose={() => setShowNewGame(false)}>
           <h2>GAME FINISHED</h2>
-          <p>{gameState.message}</p>
           <p>Wait for admin to start a new game or leave game.</p>
           {player.isAdmin && (
             <PrimaryButton text="GO AGAIN" onClick={resetGame} />

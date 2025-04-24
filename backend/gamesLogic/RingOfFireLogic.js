@@ -1,127 +1,156 @@
 const { getNewDeck, drawACard, discardCard } = require("../deckApi");
 
+const RING_CARD_AMOUNT = 52;
+
 class RingOfFireLogic {
-  /**
-   * Initializes a new instance of the RingOfFire class.
-   * @param {Object} io - The Socket.IO server instance.
-   * @param {string} roomId - The ID of the room.
-   * @param {Object} socketData - The data structure to store socket and game state information.
-   */
-  constructor(io, roomId, socketData) {
-    this.io = io;
-    this.roomId = roomId;
-    this.socketData = socketData; // Store the reference to socketData
+  constructor(gameDoc) {
+    this.gameDoc = gameDoc || {};
+    this.state = {
+      ...this.defaultState(),
+      ...(gameDoc?.state || {}),
+      mates: gameDoc?.state?.mates ?? {},
+    };
   }
 
-  // Emit an error message to the room
-  throwError(message) {
-    this.io.to(this.roomId).emit("error", message);
+  defaultState() {
+    return {
+      deckId: "",
+      message: "",
+      status: "game",
+      playerInTurn: null,
+      questionMaster: null,
+      mates: null,
+      cardsLeft: RING_CARD_AMOUNT,
+      currentCard: null,
+      isChoosingMate: false,
+    };
   }
 
-  /**
-   * Starts the game by initializing the deck and setting up the game state.
-   * This function is asynchronous and interacts with the deck API.
-   */
-  async startGame() {
-    console.log(`Ring Of Fire game started in room ${this.roomId}`);
+  async startGame(players) {
+    this.gameDoc.players = players;
+    await this.initializeDecks();
+    this.changePlayerInTurn();
+    return this.state;
+  }
 
-    // Fetch the deck
+  async initializeDecks() {
+    // Set up deck
     const deck = await getNewDeck();
-    if (deck.success) {
-      if (this.socketData[this.roomId]) {
-        const roomData = this.socketData[this.roomId];
+    if (!deck.success) throw new Error("Failed to get a new deck");
 
-        // Set room and game status
-        roomData.game.status = "playing";
-        roomData.game.deck = deck;
-        roomData.game.deckId = deck.deck_id;
-        roomData.game.cards = Array(52).fill(1);
-        roomData.game.questionMaster = null;
-
-        // Assign player in turn
-        const players = roomData.players;
-        const playerIndex = Math.floor(Math.random() * players.length);
-        const playerInTurn = players[playerIndex];
-
-        roomData.game.playerInTurn = playerInTurn;
-        let message = `WELCOME TO THE RING OF FIRE! ${playerInTurn.username} pick the first card.`;
-
-        this.io
-          .to(this.roomId)
-          .emit("game-started", { gameData: roomData, message });
-      }
-    }
+    this.state.deckId = deck.deck_id;
+    this.state.cardsLeft = deck.remaining;
   }
 
   /**
-   * Handles player actions based on the action type.
-   * @param {string} action - The action type (e.g., "GUESS_CORRECT", "GUESS_BIGGER").
-   * @param {Object} data - Additional data associated with the action.
+   * Advances the game to the next player's turn.
+   * If no player is currently in turn, selects a random one to start.
    */
-  handlePlayerAction(action, data) {
-    console.log(`Ring of fire action: ${action}`);
-    console.log("data here ", data);
-    // Implement action handling logic based on action type
+  changePlayerInTurn() {
+    const players = this.gameDoc.players;
+
+    // Handle case where there are no players
+    if (!players || players.length === 0) return;
+
+    // If no current player, choose one at random
+    if (!this.state.playerInTurn) {
+      const randomIndex = Math.floor(Math.random() * players.length);
+      this.state.playerInTurn = players[randomIndex];
+      return;
+    }
+
+    // Find current player index by ID
+    const currentIndex = players.findIndex(
+      (p) => p.id === this.state.playerInTurn.id
+    );
+
+    // Fallback if current player is no longer in list
+    const nextIndex =
+      currentIndex === -1 ? 0 : (currentIndex + 1) % players.length;
+
+    this.state.playerInTurn = players[nextIndex];
+  }
+
+  async handlePlayerAction(action, data) {
     switch (action) {
-      case "CARD-TURNED":
-        this.handleCardTurn(data.index);
+      case "PLAY_CARD":
+        await this.handlePlayCard();
         break;
-      default:
-        console.log(`Unknown action type: ${action}`);
+      case "RESET_GAME":
+        await this.resetGame();
+        break;
+      case "SET_MATE":
+        await this.handleSetMate(data.player);
+        break;
+    }
+
+    return this.state;
+  }
+
+  async resetGame() {
+    this.state = this.defaultState();
+    await this.initializeDecks();
+    this.changePlayerInTurn();
+    return this.state;
+  }
+
+  async handlePlayCard() {
+    this.state.message = "";
+    const newCard = await drawACard(this.state.deckId);
+    if (!newCard.success) throw new Error("Failed to draw a card");
+
+    this.state.currentCard = newCard.cards[0];
+    this.state.cardsLeft = newCard.remaining;
+
+    if (this.state.currentCard.value === "JACK") {
+      this.state.message = `${this.state.playerInTurn.username} is the new Question Master!`;
+      this.state.questionMaster = this.state.playerInTurn;
+    }
+
+    if (this.state.currentCard.value !== "8") {
+      this.changePlayerInTurn();
+    } else {
+      this.state.isChoosingMate = true;
+      this.state.message = `${this.state.playerInTurn.username} is choosing a mate!`;
+    }
+
+    if (newCard.remaining === 0) {
+      this.state.status = "finished";
+      this.state.message = "GAME OVER";
     }
   }
 
-  async handleCardTurn(index) {
-    console.log("We received card", index);
+  async handleSetMate(player) {
+    const currentPlayer = this.state.playerInTurn;
+    let message = "";
 
-    // Get the room data
-    const roomData = this.socketData[this.roomId];
+    if (!currentPlayer) return;
 
-    if (roomData && roomData.game && roomData.game.cards) {
-      if (roomData.game.deck && roomData.game.card) {
-        const newDeck = await discardCard(
-          roomData.game.deckId,
-          roomData.game.card.code
-        );
-        if (!newDeck.success) {
-          console.log("Error");
-          return;
-        }
-        roomData.game.deck = newDeck;
+    if (player) {
+      const key = currentPlayer.id;
+
+      if (!this.state.mates[key]) {
+        this.state.mates[key] = [];
       }
-      // Remove the card from the deck
-      roomData.game.cards[index] = 0;
 
-      // Update the player turn (optional, based on your game logic)
-      const currentIndex = roomData.players.findIndex(
-        (player) => player.username === roomData.game.playerInTurn.username
+      const alreadyAdded = this.state.mates[key].some(
+        (p) => p.id === player.id
       );
-      const nextIndex = (currentIndex + 1) % roomData.players.length;
-      let newPlayer = roomData.players[nextIndex];
 
-      const cardResponse = await drawACard(roomData.game.deckId);
-
-      if (!cardResponse.success) {
-        console.log("Error");
-        return;
+      if (!alreadyAdded) {
+        this.state.mates[key].push(player);
+        message = `${currentPlayer.username} chose ${player.username} as his mate.`;
       }
-      console.log(cardResponse);
-      const drawnCard = cardResponse.cards[0];
-
-      if (drawnCard.value === "QUEEN") {
-        roomData.game.questionMaster = roomData.game.playerInTurn;
-      }
-
-      roomData.game.playerInTurn = newPlayer;
-
-      roomData.game.card = cardResponse.cards[0];
-
-      // Broadcast the updated game state to all clients in the room
-      this.io.to(this.roomId).emit("next-turn", { gameData: roomData });
     }
-  }
 
-  rejoinGame(player, socket) {}
+    this.state.isChoosingMate = false;
+    this.state.message =
+      message === ""
+        ? `${currentPlayer.username} skipped choosing a mate.`
+        : message;
+
+    this.changePlayerInTurn();
+  }
 }
 
 module.exports = RingOfFireLogic;

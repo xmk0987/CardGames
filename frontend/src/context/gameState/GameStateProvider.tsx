@@ -5,7 +5,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import { games } from "../../lib/games";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import { AllGameStates, GameState, LobbyPlayer } from "../../types/game.types";
+import {
+  AllGameStates,
+  GamePlayer,
+  GameState,
+  LobbyPlayer,
+} from "../../types/game.types";
 import { useSocket } from "../../context/socket/useSocket";
 
 export const GameStateProvider: React.FC<{ children: React.ReactNode }> = ({
@@ -157,6 +162,10 @@ export const GameStateProvider: React.FC<{ children: React.ReactNode }> = ({
     );
   };
 
+  const isYou = (p: GamePlayer) => {
+    return player?.id === p.id;
+  };
+
   if (isLoading) return <div>Loading game...</div>;
   if (isError) return <div>Error loading game state</div>;
   if (!gameName || !gameInfo || !onGoingGame || !gameId)
@@ -172,6 +181,7 @@ export const GameStateProvider: React.FC<{ children: React.ReactNode }> = ({
         player,
         leaveGame,
         resetGame,
+        isYou,
         gameId,
         gameState: onGoingGame.state as AllGameStates,
         players: sortedPlayers,

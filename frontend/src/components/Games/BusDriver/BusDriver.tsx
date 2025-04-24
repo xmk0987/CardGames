@@ -11,8 +11,8 @@ import SharedDrinks from "./components/SharedDrinks/SharedDrinks";
 import { useSocket } from "../../../context/socket/useSocket";
 import BonusPyramid from "./components/Pyramid/BonusPyramid";
 import styles from "./BusDriver.module.css";
+import NewGame from "../../NewGame/NewGame";
 import FailModal from "./components/FailModal/FailModal";
-import NewGame from "./components/NewGame/NewGame";
 import LeaveGame from "../../LeaveGame/LeaveGame";
 import { useBusDriverGameState } from "../../../hooks/useBussDriverGameState";
 
@@ -164,7 +164,7 @@ const BusDriver = () => {
             />
           )}
           <div className={styles.totalCounter}>x{gameState.drinkAmount}</div>
-          {gameState.status === "finished" && <NewGame />}
+          <NewGame />
         </>
       )}
     </div>

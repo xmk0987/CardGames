@@ -77,7 +77,7 @@ class BusDriverLogic {
         this.handleReadyAction(data.player);
         break;
       case "PLAY_CARD":
-        this.handlePlayCard(data);
+        await this.handlePlayCard(data);
         break;
       case "START_NEXT_TURN":
         await this.handleStartNextTurn();

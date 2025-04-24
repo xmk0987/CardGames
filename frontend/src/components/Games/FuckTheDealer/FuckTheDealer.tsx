@@ -9,7 +9,7 @@ import styles from "./FuckTheDealer.module.css";
 import { useSocket } from "../../../context/socket/useSocket";
 import MessagePopup from "./components/MessagePopup/MessagePopup";
 import LeaveGame from "../../LeaveGame/LeaveGame";
-import NewGame from "./components/NewGame/NewGame";
+import NewGame from "../../NewGame/NewGame";
 
 const FuckTheDealer = () => {
   const socket = useSocket();
@@ -51,7 +51,7 @@ const FuckTheDealer = () => {
         <ChooseCards handleGuessCard={handleGuessCard} />
       )}
       {gameState.dealer.id === player.id && <DealerCard />}
-      {gameState.status === "finished" && <NewGame />}
+      <NewGame />
     </div>
   );
 };

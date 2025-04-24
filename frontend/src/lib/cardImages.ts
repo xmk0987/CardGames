@@ -58,6 +58,9 @@ export const DJ: string = "https://deckofcardsapi.com/static/img/JD.png";
 export const DQ: string = "https://deckofcardsapi.com/static/img/QD.png";
 export const DK: string = "https://deckofcardsapi.com/static/img/KD.png";
 
+export const BACK_OF_CARD: string =
+  "https://deckofcardsapi.com/static/img/back.png";
+  
 // ALL CARDS
 export const allCardsImages: Array<string> = [
   HA,

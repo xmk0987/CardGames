@@ -1,0 +1,44 @@
+.mateBtn {
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  border: 1px solid black;
+  border-radius: 50%;
+  box-shadow: var(--shadow);
+  background-color: var(--secondary-color);
+  z-index: 30;
+}
+
+.mateBtn:hover {
+  background-color: var(--accent-color3);
+  color: black;
+}
+
+.mateList {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  gap: 12px;
+}
+
+.mateEntry {
+  padding-bottom: 8px;
+  width: 100%;
+}
+
+.mateNames {
+  margin-top: 4px;
+  padding-left: 16px;
+}
+
+.noMates {
+  margin-left: 8px;
+  color: #999;
+}
+
+.you {
+  color: var(--accent-color);
+}

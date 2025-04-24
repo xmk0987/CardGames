@@ -1,0 +1,40 @@
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  flex-grow: 1;
+  overflow: scroll;
+  width: 100%;
+  padding: 30px;
+  position: relative;
+}
+
+.card {
+  max-width: 150px;
+  aspect-ratio: 2/3;
+  flex: 1;
+}
+
+.cardsLeft {
+  position: absolute;
+  top: 0;
+  right: 10px;
+}
+
+.card img {
+  width: 100%;
+}
+.card:disabled {
+  cursor: not-allowed;
+  background-color: transparent !important;
+}
+
+@media only screen and (max-width: 300px) {
+  .wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+  }
+}
