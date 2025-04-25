@@ -1,4 +1,4 @@
-// socket/games/BusDriver.js
+// socket/games/FuckTheDealer.js
 const FuckTheDealerLogic = require("../../gamesLogic/FuckTheDealerLogic");
 const Game = require("../../models/Game");
 

@@ -3,6 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const http = require("http");
 const mongoose = require("mongoose");
+const cron = require("node-cron");
 
 const initializeSocket = require("./socket");
 const Game = require("./models/Game"); // Assuming you have a Game model
@@ -23,6 +24,19 @@ mongoose
     console.error("❌ MongoDB connection error:", err.message);
     process.exit(1); // Exit process if DB connection fails
   });
+
+// ------------------------
+// Clean unused games
+// ------------------------
+cron.schedule("0 */2 * * *", async () => {
+  try {
+    const twoHoursAgo = new Date(Date.now() - 2 * 60 * 60 * 1000);
+    const result = await Game.deleteMany({ updatedAt: { $lt: twoHoursAgo } });
+    console.log(`🧼 [2-Hour Cleanup] Deleted ${result.deletedCount} old games`);
+  } catch (err) {
+    console.error("⚠️ Error during 2-hour cleanup:", err.message);
+  }
+});
 
 // ------------------------
 // CORS Setup
