@@ -4,6 +4,8 @@ import styles from "./Lobby.module.css";
 import type { GameInfo } from "../../types/game.types";
 import PrimaryButton from "../../components/PrimaryButton/PrimaryButton";
 import RulesPopup from "../../components/Rules/RulesPopup";
+import axios from "axios";
+import { SERVER_URL } from "../../lib/server";
 
 const ChooseLobby = () => {
   const { gameName } = useParams<{ gameName: string }>();
@@ -18,8 +20,27 @@ const ChooseLobby = () => {
     return Math.random().toString(36).substring(2, 8).toUpperCase();
   };
 
-  const handleCreateLobby = () => {
-    const lobbyId = generateLobbyId();
+  const checkLobbyExists = async (gameId: string): Promise<boolean> => {
+    try {
+      const response = await axios.get(`${SERVER_URL}/game/${gameId}`);
+      if (response.status === 200) {
+        return true;
+      }
+      return false;
+    } catch {
+      return false;
+    }
+  };
+
+  const handleCreateLobby = async () => {
+    let lobbyId: string = "";
+    let exists = true;
+
+    while (exists) {
+      lobbyId = generateLobbyId();
+      exists = await checkLobbyExists(lobbyId);
+    }
+
     navigate(`/lobby/${gameName}/${lobbyId}`);
   };
 

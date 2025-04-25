@@ -86,7 +86,7 @@ const Lobby = () => {
   }, [initializeLobby, userData]);
 
   const startGame = () => {
-    if (!socket || !gameId || !userData) return;
+    if (!socket || !gameId || !userData || !userData.isAdmin) return;
     socket.emit("startGame", gameId, game.route);
   };
 

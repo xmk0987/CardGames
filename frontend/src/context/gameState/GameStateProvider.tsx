@@ -12,6 +12,7 @@ import {
   LobbyPlayer,
 } from "../../types/game.types";
 import { useSocket } from "../../context/socket/useSocket";
+import { SERVER_URL } from "../../lib/server";
 
 export const GameStateProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -28,7 +29,7 @@ export const GameStateProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const fetchGameState = async () => {
     if (!gameId) throw new Error("No game ID provided.");
-    const response = await axios.get(`http://localhost:8888/game/${gameId}`);
+    const response = await axios.get(`${SERVER_URL}/game/${gameId}`);
     return response.data;
   };
 

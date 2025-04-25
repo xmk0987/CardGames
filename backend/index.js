@@ -69,12 +69,13 @@ app.use((req, res, next) => {
 app.get("/game/:gameId", async (req, res) => {
   const { gameId } = req.params;
 
+  console.log("recevedi game id ", gameId);
   try {
     const game = await Game.findById(gameId);
     if (!game) {
       return res.status(404).json({ error: "Game not found" });
     }
-    res.json(game);
+    res.status(200).json(game);
   } catch (err) {
     console.error("Error fetching game:", err.message);
     res.status(500).json({ error: "Internal server error" });
