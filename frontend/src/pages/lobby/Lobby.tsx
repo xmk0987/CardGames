@@ -19,6 +19,7 @@ const Lobby = () => {
   const [usersInLobby, setUsersInLobby] = useState<LobbyPlayer[]>([]);
   const isNavigating = useRef(false);
   const hasJoinedLobby = useRef(false);
+  const hasPromptedUsername = useRef(false);
 
   const game = games[gameName as keyof typeof games];
 
@@ -28,7 +29,13 @@ const Lobby = () => {
   };
 
   const initializeLobby = useCallback(() => {
-    if (!socket || !gameId || hasJoinedLobby.current) return;
+    if (
+      !socket ||
+      !gameId ||
+      hasJoinedLobby.current ||
+      hasPromptedUsername.current
+    )
+      return;
 
     let user: LobbyPlayer | null = null;
     const stored = localStorage.getItem("userData");
@@ -44,9 +51,15 @@ const Lobby = () => {
       }
     }
 
+    hasPromptedUsername.current = true;
+
     if (!user) {
       const username = promptUsername();
-      if (!username) return;
+
+      if (!username) {
+        navigate(`/lobby/${gameName}`);
+        return;
+      }
 
       user = {
         id: Math.random().toString(16).slice(2),
@@ -61,7 +74,7 @@ const Lobby = () => {
     localStorage.setItem("userData", JSON.stringify(user));
     socket.emit("joinLobby", gameId, user);
     hasJoinedLobby.current = true;
-  }, [socket, gameId]);
+  }, [socket, gameId, gameName, navigate]);
 
   useLobbySocketHandlers({
     socket,
