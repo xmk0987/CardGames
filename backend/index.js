@@ -83,7 +83,6 @@ app.use((req, res, next) => {
 app.get("/game/:gameId", async (req, res) => {
   const { gameId } = req.params;
 
-  console.log("recevedi game id ", gameId);
   try {
     const game = await Game.findById(gameId);
     if (!game) {
