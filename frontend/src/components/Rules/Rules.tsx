@@ -1,5 +1,4 @@
 import styles from "./Rules.module.css";
-import React from "react";
 
 const Rules = ({ rules }: { rules: string[] }) => {
   return (

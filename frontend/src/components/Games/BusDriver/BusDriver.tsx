@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useState } from "react";
+import { useState } from "react";
 import Pyramid from "./components/Pyramid/Pyramid";
 import Hand from "./components/Hand/Hand";
 import type { Card, GamePlayer } from "../../../types/game.types";

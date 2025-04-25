@@ -6,7 +6,6 @@ import PrimaryButton from "../../components/PrimaryButton/PrimaryButton";
 import RulesPopup from "../../components/Rules/RulesPopup";
 import axios from "axios";
 import { SERVER_URL } from "../../lib/server";
-import React from "react";
 
 const ChooseLobby = () => {
   const { gameName } = useParams<{ gameName: string }>();

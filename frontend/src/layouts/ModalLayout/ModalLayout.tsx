@@ -1,7 +1,6 @@
 import styles from "./ModalLayout.module.css";
 import CloseIcon from "../../assets/icons/CloseIcon";
 import { ReactNode } from "react";
-import React from "react";
 
 interface ModalLayoutProps {
   children: ReactNode;

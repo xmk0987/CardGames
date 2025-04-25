@@ -1,5 +1,4 @@
 import "./App.css";
-import React from "react";
 import { Route, Routes } from "react-router";
 import Games from "./pages/games/Games";
 import GameRouter from "./pages/GameRouter/GameRouter";

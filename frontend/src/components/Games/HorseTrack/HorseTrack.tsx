@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from "react";
+import { useEffect, useCallback } from "react";
 import { useSocket } from "../../../context/socket/useSocket";
 import { useHorseTrackGameState } from "../../../hooks/useHorseTrackGameState";
 import LeaveGame from "../../LeaveGame/LeaveGame";

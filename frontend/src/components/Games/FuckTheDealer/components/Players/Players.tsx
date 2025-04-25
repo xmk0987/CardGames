@@ -1,7 +1,6 @@
 import { useFuckTheDealerGameState } from "../../../../../hooks/useFuckTheDealerGameState";
 import styles from "./Players.module.css";
 import { GamePlayer } from "../../../../../types/game.types";
-import React from "react";
 
 const Players = () => {
   const { players, player, gameState } = useFuckTheDealerGameState();

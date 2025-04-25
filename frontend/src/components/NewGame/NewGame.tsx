@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import styles from "./NewGame.module.css";
 import PrimaryButton from "../PrimaryButton/PrimaryButton";
 import ModalLayout from "../../layouts/ModalLayout/ModalLayout";

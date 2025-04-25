@@ -2,7 +2,6 @@ import { useRingOfFireGameState } from "../../../../../hooks/useRingOfFireGameSt
 import styles from "./Deck.module.css";
 import { BACK_OF_CARD } from "../../../../../lib/cardImages";
 import { useSocket } from "../../../../../context/socket/useSocket";
-import React from "react";
 
 const Deck = () => {
   const { gameState, player, gameId } = useRingOfFireGameState();

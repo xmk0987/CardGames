@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useState } from "react";
+import { useState } from "react";
 import { useFuckTheDealerGameState } from "../../../hooks/useFuckTheDealerGameState";
 import ChooseCards from "./components/ChooseCards/ChooseCards";
 import DealerCard from "./components/DealerCard/DealerCard";
