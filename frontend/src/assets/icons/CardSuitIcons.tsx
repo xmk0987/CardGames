@@ -38,14 +38,15 @@ export const CrossIcon: React.FC = () => (
 );
 
 // DiamondIcon.tsx
-export const DiamondIcon: React.FC = () => (
+export const DiamondIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 24 24"
     width="24"
     height="24"
     fill="currentColor"
+    {...props}
   >
-    <path d="M16.34 3.34l-8 8 8 8 8-8-8-8zM1.66 12l8 8 8-8-8-8-8 8z" />
+    <polygon points="12,2 22,12 12,22 2,12" />
   </svg>
 );

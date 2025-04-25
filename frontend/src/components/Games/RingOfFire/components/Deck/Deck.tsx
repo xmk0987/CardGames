@@ -8,7 +8,6 @@ const Deck = () => {
   const socket = useSocket();
 
   const handleCardClick = () => {
-    console.log("Card clicked");
     if (gameState.isChoosingMate) return;
     
     socket.emit("playerAction", gameId, "PLAY_CARD");

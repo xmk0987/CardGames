@@ -1,13 +1,11 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import styles from "./LeaveGame.module.css";
 import ModalLayout from "../../layouts/ModalLayout/ModalLayout";
 import PrimaryButton from "../PrimaryButton/PrimaryButton";
+import { useGameState } from "../../context/gameState/useGameState";
 
-interface LeaveGameProps {
-  leaveGame: () => void;
-}
-
-const LeaveGame: React.FC<LeaveGameProps> = ({ leaveGame }) => {
+const LeaveGame = () => {
+  const { leaveGame } = useGameState();
   const [showConfirmLeave, setShowConfirmLeave] = useState(false);
 
   return (

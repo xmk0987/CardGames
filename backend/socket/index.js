@@ -7,11 +7,13 @@ const Game = require("../models/Game");
 const registerBusDriverHandlers = require("./games/BusDriver");
 const registerFuckTheDealerHandlers = require("./games/FuckTheDealer");
 const registerRingOfFireHandlers = require("./games/RingOfFire");
+const registerHorseTrackHandlers = require("./games/HorseTrack");
 
 const gameHandlers = {
   busDriver: registerBusDriverHandlers,
   fuckTheDealer: registerFuckTheDealerHandlers,
   ringOfFire: registerRingOfFireHandlers,
+  horseTrack: registerHorseTrackHandlers,
 };
 
 function initializeSocket(server, options) {

@@ -1,14 +1,14 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { games } from "../../lib/games";
 import styles from "./Lobby.module.css";
-import type { Game } from "../../types/game.types";
+import type { GameInfo } from "../../types/game.types";
 import PrimaryButton from "../../components/PrimaryButton/PrimaryButton";
 import RulesPopup from "../../components/Rules/RulesPopup";
 
 const ChooseLobby = () => {
   const { gameName } = useParams<{ gameName: string }>();
   const navigate = useNavigate();
-  const game = games[gameName as keyof typeof games] as Game;
+  const game = games[gameName as keyof typeof games] as GameInfo;
 
   if (!game) {
     return <div className={styles.container}>Game not found</div>;

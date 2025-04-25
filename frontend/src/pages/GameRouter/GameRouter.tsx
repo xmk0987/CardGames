@@ -1,5 +1,6 @@
 import BusDriver from "../../components/Games/BusDriver/BusDriver";
 import FuckTheDealer from "../../components/Games/FuckTheDealer/FuckTheDealer";
+import HorseTrack from "../../components/Games/HorseTrack/HorseTrack";
 import RingOfFire from "../../components/Games/RingOfFire/RingOfFire";
 import RulesPopup from "../../components/Rules/RulesPopup";
 import { useGameState } from "../../context/gameState/useGameState";
@@ -16,6 +17,8 @@ const GameRouter = () => {
         return <FuckTheDealer />;
       case "ringOfFire":
         return <RingOfFire />;
+      case "horseTrack":
+        return <HorseTrack />;
       default:
         return <div>Game not found</div>;
     }

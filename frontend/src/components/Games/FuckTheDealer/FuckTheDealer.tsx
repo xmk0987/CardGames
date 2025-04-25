@@ -13,7 +13,7 @@ import NewGame from "../../NewGame/NewGame";
 
 const FuckTheDealer = () => {
   const socket = useSocket();
-  const { gameState, player, gameId, leaveGame } = useFuckTheDealerGameState();
+  const { gameState, player, gameId } = useFuckTheDealerGameState();
   const [loading, setLoading] = useState<boolean>(false);
 
   const handleGuessCard = (index: number) => {
@@ -41,7 +41,7 @@ const FuckTheDealer = () => {
     <div className={styles.container}>
       {gameState.status === "game" && (
         <>
-          <LeaveGame leaveGame={leaveGame} />
+          <LeaveGame/>
           <MessagePopup />
         </>
       )}

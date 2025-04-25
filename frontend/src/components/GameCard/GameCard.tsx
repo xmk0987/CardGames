@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import type { Game } from "../../types/game.types";
+import type { GameInfo } from "../../types/game.types";
 import { useNavigate } from "react-router";
 import GroupIcon from "../../assets/icons/GroupIcon";
 import styles from "./GameCard.module.css";
 import Rules from "../Rules/Rules";
 
 interface GameCardProps {
-  game: Game;
+  game: GameInfo;
 }
 
 const GameCard: React.FC<GameCardProps> = ({ game }) => {

@@ -8,11 +8,11 @@ import LeaveGame from "../../LeaveGame/LeaveGame";
 import NewGame from "../../NewGame/NewGame";
 
 const RingOfFire: React.FC = () => {
-  const { gameState, leaveGame } = useRingOfFireGameState();
+  const { gameState } = useRingOfFireGameState();
 
   return (
     <div className={styles.container}>
-      <LeaveGame leaveGame={leaveGame} />
+      <LeaveGame/>
       <NewGame />
       {gameState.message !== "" && <p>{gameState.message}</p>}
       <Mate />

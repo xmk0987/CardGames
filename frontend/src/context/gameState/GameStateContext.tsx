@@ -1,7 +1,7 @@
 // GameStateContext.ts
 import { createContext } from "react";
 import {
-  Game,
+  GameInfo,
   GamePlayer,
   AllGameStates,
   GameState,
@@ -12,7 +12,7 @@ export interface GameStateContextProps<
   T extends AllGameStates = AllGameStates
 > {
   onGoingGame: GameState;
-  gameInfo: Game;
+  gameInfo: GameInfo;
   player: LobbyPlayer;
   gameState: T;
   players: GamePlayer[];

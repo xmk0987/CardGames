@@ -2,11 +2,11 @@ import busDriverImage from "../assets/images/games/busdriver.webp";
 import ringOfFireImage from "../assets/images/games/ringoffire.webp";
 import horseRaceImage from "../assets/images/games/horserace.webp";
 import drunkDealerImage from "../assets/images/games/drunkDealer.webp";
-import type { Game } from "../types/game.types";
+import type { GameInfo } from "../types/game.types";
 
 // Define an interface for the complete games object
 export interface Games {
-  [key: string]: Game;
+  [key: string]: GameInfo;
 }
 
 // Type the games object with the Games interface
@@ -96,7 +96,7 @@ export const games: Games = {
       "They then shuffle the deck and lay out a variable number of cards face-down (these form the 'links' of the race) in a straight line perpendicular to the row of aces.",
       "The cards thus appear to form an 'L' or the two legs of a right triangle. The field is now set.",
       "Before the game begins, each player makes bets based on their horse being as simple as 'five on diamonds'.",
-      "The player has to drink 1/3 of his bet amount before the race starts as a pay in.",
+      "The player has to drink 1/2 of his bet amount before the race starts as a buy in.",
       "Once all bets are in, the announcer begins the race.",
       "They flip over the top card of the remaining deck. Only the suit of this card matters; the ace of that suit moves forward to the first link.",
       "The announcer narrates the ebb and flow of the game as the betters cheer on their horse.",

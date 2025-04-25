@@ -18,7 +18,7 @@ import { useBusDriverGameState } from "../../../hooks/useBussDriverGameState";
 
 const BusDriver = () => {
   const socket = useSocket();
-  const { player, gameState, gameId, leaveGame } = useBusDriverGameState();
+  const { player, gameState, gameId } = useBusDriverGameState();
   const { readyPlayers } = gameState;
 
   const [playingCard, setPlayingCard] = useState<Card | null>(null);
@@ -128,7 +128,7 @@ const BusDriver = () => {
 
   return (
     <div className={styles.container}>
-      <LeaveGame leaveGame={leaveGame} />
+      <LeaveGame  />
       {gameState.status === "game" ? (
         <>
           <SharedDrinks handleNextTurn={handleNextTurn} />

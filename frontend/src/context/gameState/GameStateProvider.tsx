@@ -110,7 +110,6 @@ export const GameStateProvider: React.FC<{ children: React.ReactNode }> = ({
     };
 
     const handlePlayerLeft = (data: { playerId: string }) => {
-      console.log("Player left", data);
       queryClient.setQueryData(
         ["gameState", gameId],
         (oldData: GameState | undefined) => {

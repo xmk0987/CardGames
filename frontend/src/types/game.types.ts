@@ -66,30 +66,42 @@ export interface RingOfFireGameState {
   currentCard: Card;
 }
 
-export type GameName = "busDriver" | "fuckTheDealer" | "ringOfFire";
+export interface HorseTrackGameState {
+  message: string;
+  status: "finished" | "game" | "bets" | "betsSet";
+  bets: {
+    [key: string]: {
+      suit: CardSuits;
+      amount: number;
+    };
+  };
+  horses: {
+    spade: { position: number; frozen: boolean };
+    heart: { position: number; frozen: boolean };
+    cross: { position: number; frozen: boolean };
+    diamond: { position: number; frozen: boolean };
+  };
+  winner: CardSuits;
+  trackLength: number;
+}
 
+type CardSuits = "heart" | "cross" | "spade" | "diamond";
 export interface GameStateMap {
   busDriver: BusDriverGameState;
   ringOfFire: RingOfFireGameState;
   fuckTheDealer: FuckTheDealerGameState;
+  horseTrack: HorseTrackGameState;
 }
 
 export type AllGameStates = GameStateMap[keyof GameStateMap];
 
-// ! FIX TYPES
 export interface Card {
   code: string;
   image: string;
   value: string;
   suit: string;
 }
-
-export interface Deck {
-  deck_id: string;
-  cards: Card[];
-}
-
-export interface Game {
+export interface GameInfo {
   name: string;
   image: string;
   desc: string;
@@ -105,4 +117,6 @@ export type GAME_ACTIONS =
   | "START_NEXT_TURN"
   | "RESET_BONUS"
   | "RESET_GAME"
-  | "SET_MATE";
+  | "SET_MATE"
+  | "SET_BET"
+  | "MOVE_HORSE";

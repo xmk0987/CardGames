@@ -15,6 +15,7 @@ const NewGame = () => {
       {showNewGame ? (
         <ModalLayout onClose={() => setShowNewGame(false)}>
           <h2>GAME FINISHED</h2>
+          {gameState.message !== "" && <p>{gameState.message}</p>}
           <p>Wait for admin to start a new game or leave game.</p>
           {player.isAdmin && (
             <PrimaryButton text="GO AGAIN" onClick={resetGame} />

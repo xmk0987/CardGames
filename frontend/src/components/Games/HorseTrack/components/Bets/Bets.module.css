@@ -1,0 +1,66 @@
+.showDrinks {
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  border: 1px solid black;
+  border-radius: 50%;
+  box-shadow: var(--shadow);
+  background-color: var(--secondary-color);
+}
+
+.showDrinks:hover {
+  background-color: var(--accent-color3);
+  color: black;
+}
+
+.suits {
+  display: flex;
+  flex-flow: row wrap;
+  gap: 20px;
+}
+
+.suit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.betAmount {
+  padding: 5px 10px;
+  font-size: 1.2rem;
+}
+
+.selected {
+  font-size: 1.2rem;
+  color: red;
+}
+
+.bets {
+  width: 100%;
+  font-size: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  overflow: scroll;
+}
+
+.you {
+  color: var(--accent-color);
+}
+
+.bet {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 10px;
+  border-bottom: 1px solid black;
+}
+
+.suitbet {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}

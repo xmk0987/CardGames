@@ -1,46 +1,49 @@
+const LENGTH_OF_TRACK = 6;
+const MOVE_MESSAGES = [
+  "Horse gallops ahead!",
+  "Off it goes like the wind!",
+  "Speed demon on the loose!",
+  "Pushing past the competition!",
+  "Neigh way it’s slowing down!",
+  "Charging forward with power!",
+  "It's making a break for it!",
+  "Another step closer to victory!",
+  "The crowd goes wild!",
+  "It surges forward!",
+];
 
 class HorseTrackLogic {
-  /**
-   * Initializes a new instance of the HorseTrackLogic class.
-   * @param {Object} io - The Socket.IO server instance.
-   * @param {string} roomId - The ID of the room.
-   * @param {Object} socketData - The data structure to store socket and game state information.
-   */
-  constructor(io, roomId, socketData) {
-    this.io = io;
-    this.roomId = roomId;
-    this.socketData = socketData; // Store the reference to socketData
-  }
-
-  /**
-   * Starts the game by initializing the deck and setting up the game state.
-   * This function is asynchronous and interacts with the deck API.
-   */
-  async startGame() {
-    console.log(`Horse Track game started in room ${this.roomId}`);
-    const roomData = this.socketData[this.roomId];
-
-    roomData.game.status = "bets";
-    roomData.game.horses = {
-      spade: { position: 0, frozen: false },
-      heart: { position: 0, frozen: false },
-      cross: { position: 0, frozen: false },
-      diamond: { position: 0, frozen: false },
+  constructor(gameDoc) {
+    this.gameDoc = gameDoc || {};
+    this.state = {
+      ...this.defaultState(),
+      ...(gameDoc?.state || {}),
+      bets: gameDoc?.state?.bets ?? {},
     };
-    roomData.game.bets = {};
-    roomData.game.winningSuit = "";
-    this.io.to(this.roomId).emit("game-started", { gameData: roomData });
   }
 
-  /**
-   * Handles player actions based on the action type.
-   * @param {string} action - The action type (e.g., "GUESS_CORRECT", "GUESS_BIGGER").
-   * @param {Object} data - Additional data associated with the action.
-   */
+  defaultState() {
+    return {
+      message: "",
+      status: "bets",
+      bets: null,
+      horses: {
+        spade: { position: 0, frozen: false },
+        diamond: { position: 0, frozen: false },
+        cross: { position: 0, frozen: false },
+        heart: { position: 0, frozen: false },
+      },
+      winner: null,
+      trackLength: LENGTH_OF_TRACK,
+      checkpointReached: [],
+    };
+  }
+
+  startGame() {
+    return this.state;
+  }
+
   handlePlayerAction(action, data) {
-    console.log(`Horse Track action: ${action}`);
-    console.log("data here ", data);
-    // Implement action handling logic based on action type
     switch (action) {
       case "MOVE_HORSE":
         this.moveHorse();
@@ -48,57 +51,90 @@ class HorseTrackLogic {
       case "SET_BET":
         this.setBet(data);
         break;
+      case "RESET_GAME":
+        this.resetGame();
+        break;
       default:
         console.log(`Unknown action type: ${action}`);
     }
+
+    return this.state;
   }
 
-  /**
-   * Moves a random horse forward by one position.
-   */
-  moveHorse() {
-    const roomData = this.socketData[this.roomId];
+  resetGame() {
+    this.state = this.defaultState();
+    return this.state;
+  }
 
-    if (roomData.game.status === "bets") {
-      console.log("we arrive in here to set game to playing");
-      roomData.game.status = "playing";
+  moveHorse() {
+    if (this.state.status === "betsSet") {
+      this.state.status = "game";
     }
-    const horseKeys = Object.keys(roomData.game.horses);
+
+    const horseKeys = Object.keys(this.state.horses);
     const randomIndex = Math.floor(Math.random() * horseKeys.length);
     const selectedHorse = horseKeys[randomIndex];
+    const selected = this.state.horses[selectedHorse];
 
-    // Move the selected horse forward by one position
-    roomData.game.horses[selectedHorse].position += 1;
+    selected.position += 1;
 
-    // Emit the updated game state to all clients
-    // If horse reaches goal set game over
-    if (roomData.game.horses[selectedHorse].position === 5) {
-      roomData.game.winningSuit = selectedHorse;
-      console.log(roomData.game.winningSuit);
-      roomData.game.status = "game-over";
+    // Check for race finish
+    if (selected.position === LENGTH_OF_TRACK) {
+      this.state.winner = selectedHorse;
+      this.state.status = "finished";
+      this.state.message = `${selectedHorse.toUpperCase()} won the race. Share your bets.`;
+      return;
     }
-    this.io.to(this.roomId).emit("next-turn", { gameData: roomData });
+
     console.log(
-      `Horse ${selectedHorse} moved to position ${roomData.game.horses[selectedHorse].position}`
+      `Horse ${selectedHorse} moved to position ${selected.position}`
     );
+    const randomMsg =
+      MOVE_MESSAGES[Math.floor(Math.random() * MOVE_MESSAGES.length)];
+    this.state.message = `${selectedHorse.toUpperCase()}: ${randomMsg}`;
+
+    for (let i = 1; i < LENGTH_OF_TRACK; i++) {
+      if (this.state.checkpointReached.includes(i)) continue;
+
+      const allPassed = horseKeys.every(
+        (key) => this.state.horses[key].position >= i
+      );
+
+      if (allPassed) {
+        const toPullBack =
+          horseKeys[Math.floor(Math.random() * horseKeys.length)];
+
+        const currentPos = this.state.horses[toPullBack].position;
+        this.state.horses[toPullBack].position = Math.max(0, currentPos - 1);
+
+        this.state.message = `${toPullBack.toUpperCase()} stumbled and moved back!`;
+        console.log(
+          `Horse ${toPullBack} moved from position ${currentPos} to ${this.state.horses[toPullBack].position} at checkpoint ${i}.`
+        );
+
+        this.state.checkpointReached.push(i);
+        break;
+      }
+    }
   }
 
-  /*
-  Saves players bet 
-   */
   setBet(data) {
     const { bet, suit, player } = data;
-    console.log("SETTING BET WITH DATA", data);
-    const name = player.username;
-    const roomData = this.socketData[this.roomId];
 
-    roomData.game.bets[name] = { bet, suit };
-    this.io.to(this.roomId).emit("next-turn", { gameData: roomData });
-  }
+    if (!this.state.bets) {
+      this.state.bets = {};
+    }
 
-  // Rejoin game
-  rejoinGame(player, socket) {
-    console.log("trying to reconnect bd");
+    if (this.state.bets[player.id]) {
+      console.log(`Player ${player.username} has already placed a bet.`);
+      return;
+    }
+
+    this.state.bets[player.id] = { amount: bet, suit };
+
+    if (Object.keys(this.state.bets).length === this.gameDoc.players.length) {
+      this.state.status = "betsSet";
+    }
   }
 }
 
