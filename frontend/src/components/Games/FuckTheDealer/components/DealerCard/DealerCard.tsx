@@ -1,5 +1,6 @@
 import { useFuckTheDealerGameState } from "../../../../../hooks/useFuckTheDealerGameState";
 import styles from "./DealerCard.module.css";
+import React from "react";
 
 const DealerCard = () => {
   const { gameState } = useFuckTheDealerGameState();

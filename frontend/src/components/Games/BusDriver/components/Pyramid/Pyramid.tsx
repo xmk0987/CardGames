@@ -1,6 +1,7 @@
 import styles from "./Pyramid.module.css";
 import { useBusDriverGameState } from "../../../../../hooks/useBussDriverGameState";
 import { BACK_OF_CARD } from "../../../../../lib/cardImages";
+import React from "react";
 
 const Pyramid = () => {
   const { gameState } = useBusDriverGameState();

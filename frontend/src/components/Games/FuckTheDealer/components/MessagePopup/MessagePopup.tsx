@@ -3,6 +3,7 @@ import { useFuckTheDealerGameState } from "../../../../../hooks/useFuckTheDealer
 import ModalLayout from "../../../../../layouts/ModalLayout/ModalLayout";
 import styles from "./MessagePopup.module.css";
 import PrimaryButton from "../../../../PrimaryButton/PrimaryButton";
+import React from "react";
 
 const MessagePopup = () => {
   const { gameState } = useFuckTheDealerGameState();

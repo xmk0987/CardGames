@@ -5,6 +5,7 @@ import RingOfFire from "../../components/Games/RingOfFire/RingOfFire";
 import RulesPopup from "../../components/Rules/RulesPopup";
 import { useGameState } from "../../context/gameState/useGameState";
 import styles from "./GameRouter.module.css";
+import React from "react";
 
 const GameRouter = () => {
   const { gameInfo } = useGameState();

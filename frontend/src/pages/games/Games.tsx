@@ -1,6 +1,6 @@
 import styles from "./Games.module.css";
 import GameCard from "../../components/GameCard/GameCard";
-
+import React from "react";
 import { games } from "../../lib/games";
 
 const Games = () => {

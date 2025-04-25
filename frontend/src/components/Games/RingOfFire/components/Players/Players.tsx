@@ -1,6 +1,7 @@
 import styles from "./Players.module.css";
 import { GamePlayer } from "../../../../../types/game.types";
 import { useRingOfFireGameState } from "../../../../../hooks/useRingOfFireGameState";
+import React from "react";
 
 const Players = () => {
   const { players, gameState, isYou } = useRingOfFireGameState();

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useState } from "react";
+import React, { useState } from "react";
 import Pyramid from "./components/Pyramid/Pyramid";
 import Hand from "./components/Hand/Hand";
 import type { Card, GamePlayer } from "../../../types/game.types";
@@ -128,7 +128,7 @@ const BusDriver = () => {
 
   return (
     <div className={styles.container}>
-      <LeaveGame  />
+      <LeaveGame />
       {gameState.status === "game" ? (
         <>
           <SharedDrinks handleNextTurn={handleNextTurn} />

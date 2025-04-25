@@ -1,5 +1,5 @@
 // components/HorseTrack/BettingPanel.tsx
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSocket } from "../../../../../context/socket/useSocket";
 import { useHorseTrackGameState } from "../../../../../hooks/useHorseTrackGameState";
 import PrimaryButton from "../../../../PrimaryButton/PrimaryButton";

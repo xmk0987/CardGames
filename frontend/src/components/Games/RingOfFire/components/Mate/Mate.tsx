@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import ModalLayout from "../../../../../layouts/ModalLayout/ModalLayout";
 import { useRingOfFireGameState } from "../../../../../hooks/useRingOfFireGameState";
 import styles from "./Mate.module.css";

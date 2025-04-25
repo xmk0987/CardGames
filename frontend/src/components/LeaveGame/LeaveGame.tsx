@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import styles from "./LeaveGame.module.css";
 import ModalLayout from "../../layouts/ModalLayout/ModalLayout";
 import PrimaryButton from "../PrimaryButton/PrimaryButton";

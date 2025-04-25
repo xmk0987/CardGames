@@ -2,6 +2,7 @@ import styles from "./Pyramid.module.css";
 import { Card } from "../../../../../types/game.types";
 import { useBusDriverGameState } from "../../../../../hooks/useBussDriverGameState";
 import { BACK_OF_CARD } from "../../../../../lib/cardImages";
+import React from "react";
 
 interface BonusPyramidProps {
   playBonusCard: (card: Card) => void;

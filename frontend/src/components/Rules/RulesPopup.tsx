@@ -24,7 +24,9 @@ const RulesPopup: React.FC<RulesPopupProps> = ({ header, rules }) => {
           <div className={styles.rulesContainer}>
             <Rules rules={rules} />
           </div>
-          <button onClick={toggleRules} className={styles.popupClose}>CLOSE</button>
+          <button onClick={toggleRules} className={styles.popupClose}>
+            CLOSE
+          </button>
         </ModalLayout>
       ) : (
         <RulesButton toggleRules={toggleRules} />

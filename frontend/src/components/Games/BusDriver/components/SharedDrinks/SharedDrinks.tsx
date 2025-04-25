@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import styles from "./SharedDrinks.module.css";
 import giveBeerImage from "../../../../../assets/images/giveBeer.png";
 import PrimaryButton from "../../../../PrimaryButton/PrimaryButton";

@@ -2,6 +2,7 @@ import styles from "./ChooseCards.module.css";
 import { cardsBySuit } from "../../../../../lib/cardImages";
 import { useFuckTheDealerGameState } from "../../../../../hooks/useFuckTheDealerGameState";
 import { mapNumberToCardValue } from "../../../../../utils/helpers";
+import React from "react";
 
 interface ChooseCardsProps {
   handleGuessCard: (index: number) => void;

@@ -7,6 +7,7 @@ import {
   SpadeIcon,
   DiamondIcon,
 } from "../../../../../assets/icons/CardSuitIcons";
+import React from "react";
 
 const lanes: Array<keyof HorseTrackGameState["horses"]> = [
   "spade",

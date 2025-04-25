@@ -1,6 +1,7 @@
 import { useFuckTheDealerGameState } from "../../../../../hooks/useFuckTheDealerGameState";
 import styles from "./TurnedCards.module.css";
 import { mapCardValueToNumber } from "../../../../../utils/helpers";
+import React from "react";
 
 const TurnedCards = () => {
   const { gameState } = useFuckTheDealerGameState();
