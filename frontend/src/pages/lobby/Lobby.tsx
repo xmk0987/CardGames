@@ -1,173 +1,144 @@
-import { useState, useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { games } from "../../lib/games";
-import styles from "./Lobby.module.css";
 import { useSocket } from "../../context/socket/useSocket";
-import PrimaryButton from "../../components/PrimaryButton/PrimaryButton";
+import { GamePlayer, type LobbyPlayer } from "../../types/game.types";
+import styles from "./Lobby.module.css";
+import { games } from "../../lib/games";
 import RulesPopup from "../../components/Rules/RulesPopup";
-import type { LobbyPlayer } from "../../types/game.types";
-import { useLobbySocketHandlers } from "../../hooks/useLobbySocketHandlers";
+import PrimaryButton from "../../components/PrimaryButton/PrimaryButton";
+import CreateUser from "./CreateUser";
 
 const Lobby = () => {
+  const socket = useSocket();
+  const navigate = useNavigate();
   const { gameName, gameId } = useParams<{
     gameName: string;
     gameId: string;
   }>();
-  const socket = useSocket();
-  const navigate = useNavigate();
-  const [userData, setUserData] = useState<LobbyPlayer | null>(null);
-  const [usersInLobby, setUsersInLobby] = useState<LobbyPlayer[]>([]);
-  const isNavigating = useRef(false);
-  const hasJoinedLobby = useRef(false);
-  const hasPromptedUsername = useRef(false);
-
+  const [usersInLobby, setUsersInLobby] = useState<GamePlayer[]>([]);
+  const [user, setUser] = useState<LobbyPlayer | null>(null);
+  const [message, setMessage] = useState<string>("");
   const game = games[gameName as keyof typeof games];
 
-  const promptUsername = () => {
-    const newUsername = prompt("Enter your username:");
-    return newUsername?.trim() || null;
-  };
+  const cancelJoin = useCallback(() => {
+    navigate(`/game/${gameName}`);
+  }, [gameName, navigate]);
 
-  const initializeLobby = useCallback(() => {
-    if (
-      !socket ||
-      !gameId ||
-      hasJoinedLobby.current ||
-      hasPromptedUsername.current
-    )
-      return;
+  const leaveLobby = useCallback(() => {
+    if (!gameId || !user) return;
 
-    let user: LobbyPlayer | null = null;
-    const stored = localStorage.getItem("userData");
-
-    if (stored) {
-      try {
-        const parsed = JSON.parse(stored);
-        if (parsed?.gameId === gameId) {
-          user = { ...parsed, socketId: socket.id };
-        }
-      } catch {
-        user = null;
-      }
-    }
-
-    hasPromptedUsername.current = true;
-
-    if (!user) {
-      const username = promptUsername();
-
-      if (!username) {
-        navigate(`/lobby/${gameName}`);
-        return;
-      }
-
-      user = {
-        id: Math.random().toString(16).slice(2),
-        username,
-        gameId,
-        socketId: socket.id,
-        isAdmin: false,
-      };
-    }
-
-    setUserData(user);
-    localStorage.setItem("userData", JSON.stringify(user));
-    socket.emit("joinLobby", gameId, user);
-    hasJoinedLobby.current = true;
-  }, [socket, gameId, gameName, navigate]);
-
-  useLobbySocketHandlers({
-    socket,
-    gameId,
-    gameName,
-    setUserData,
-    setUsersInLobby,
-    navigate,
-    initializeLobby,
-    hasJoinedLobby,
-  });
+    socket.emit("leaveLobby", gameId, user);
+    setUser(null);
+    localStorage.removeItem("user");
+    cancelJoin();
+  }, [cancelJoin, gameId, socket, user]);
 
   useEffect(() => {
-    if (isNavigating.current) {
-      isNavigating.current = false;
+    if (!gameName || !gameId || !game) {
+      navigate("/");
+    }
+  }, [game, gameId, gameName, navigate]);
+
+  useEffect(() => {
+    if (!socket) {
       return;
     }
 
-    if (userData === null) {
-      initializeLobby();
-    }
-  }, [initializeLobby, userData]);
+    socket.on("lobbyJoined", ({ users, userData }) => {
+      setUser(userData);
+      setUsersInLobby(users);
+      localStorage.setItem("user", JSON.stringify(userData));
+    });
+
+    socket.on("usersUpdated", ({ users }) => {
+      setUsersInLobby(users);
+    });
+
+    socket.on("gameStarted", () => {
+      navigate(`/game/${gameName}/${gameId}`);
+    });
+
+    socket.on("adminPromoted", ({ user }) => {
+      setUser(user);
+    });
+
+    socket.on("usernameTaken", ({ message }) => {
+      setMessage(message);
+    });
+
+    return () => {
+      socket.off("lobbyJoined");
+      socket.off("gameStarted");
+      socket.off("adminPromoted");
+      socket.off("usernameTaken");
+      socket.off("usersUpdated");
+    };
+  }, [cancelJoin, gameId, gameName, navigate, socket, user]);
+
+  if (!user) {
+    return (
+      <CreateUser
+        message={message}
+        gameId={gameId}
+        cancelJoin={cancelJoin}
+        setMessage={setMessage}
+      />
+    );
+  }
 
   const startGame = () => {
-    if (!socket || !gameId || !userData || !userData.isAdmin) return;
-    socket.emit("startGame", gameId, game.route);
+    if (!user.isAdmin || !gameId || !gameName) return;
+
+    socket.emit("startGame", gameId, gameName);
   };
 
-  const handleLeaveLobby = () => {
-    if (!socket || !userData || !gameId) return;
-
-    isNavigating.current = true;
-    socket.emit("leaveLobby", gameId, userData);
-    localStorage.removeItem("userData");
-    setUserData(null);
-    navigate(`/lobby/${gameName}`);
-  };
-
-  if (!game || !gameId || !userData) {
-    return <div className={styles.container}>Joining lobby here ...</div>;
-  }
+  const isStartDisabled =
+    usersInLobby.length < game.minPlayers ||
+    usersInLobby.length > game.maxPlayers;
 
   return (
     <>
       <RulesPopup header={game.name} rules={game.rules} />
       <div className={styles.lobbyContainer}>
-        <div className={styles.lobbyHeader}>
+        <header className={styles.lobbyHeader}>
           <p>Lobby for {game.name}</p>
           <h2>{gameId}</h2>
           <div className={styles.lobbyInfo}>
             Players:
-            <span
-              className={
-                usersInLobby.length >= game.maxPlayers ||
-                usersInLobby.length < game.minPlayers
-                  ? styles.full
-                  : ""
-              }
-            >
+            <span className={isStartDisabled ? styles.full : ""}>
               {usersInLobby.length} / {game.maxPlayers}
             </span>
             {usersInLobby.length < game.minPlayers && (
               <span className={styles.minPlayers}>- Min {game.minPlayers}</span>
             )}
           </div>
-        </div>
+        </header>
+
         <div className={styles.players}>
-          {usersInLobby.map((user) => (
+          {usersInLobby.map((u) => (
             <span
-              key={user.id}
+              key={u.id}
               className={`${styles.player} ${
-                user.id === userData.id ? styles.you : ""
+                u.id === user.id ? styles.you : ""
               }`}
             >
-              {user.username}
+              {u.username}
             </span>
           ))}
         </div>
-        <div className={styles.lobbyFooter}>
-          {userData.isAdmin && (
+
+        <footer className={styles.lobbyFooter}>
+          {user.isAdmin && (
             <div className={styles.lobbyOptions}>
               <PrimaryButton
                 text="Start"
-                isDisabled={
-                  usersInLobby.length >= game.maxPlayers ||
-                  usersInLobby.length < game.minPlayers
-                }
+                isDisabled={isStartDisabled}
                 onClick={startGame}
               />
             </div>
           )}
-          <PrimaryButton text="Leave lobby" onClick={handleLeaveLobby} />
-        </div>
+          <PrimaryButton text="Leave lobby" onClick={leaveLobby} />
+        </footer>
       </div>
     </>
   );

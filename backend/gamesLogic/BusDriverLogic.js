@@ -161,7 +161,6 @@ class BusDriverLogic {
 
   async handleStartNextTurn() {
     if (this.state.round === PYRAMID_CARDS_AMOUNT - 1) {
-      console.log("Game finished");
       await this.handleStartBonusRound();
       return;
     }
@@ -205,8 +204,6 @@ class BusDriverLogic {
   }
 
   async handleStartBonusRound(reset = false) {
-    console.log("Bonus round");
-
     this.state.status = "bonus";
     // Find loser
     if (!reset) {
@@ -236,8 +233,6 @@ class BusDriverLogic {
   async playBonusCard(data) {
     const { card } = data;
     const failCardValues = ["ACE", "KING", "QUEEN", "JACK"];
-
-    console.log("Failed bonus", failCardValues.includes(card.value));
     if (failCardValues.includes(card.value)) {
       this.state.message = `${this.state.busDriver.username} has to drink ${this.state.round}`;
       this.state.drinkAmount += this.state.round;
@@ -276,7 +271,6 @@ class BusDriverLogic {
     const randomIndex = Math.floor(Math.random() * potentialLosers.length);
     const loser = potentialLosers[randomIndex];
 
-    console.log(`Loser is: ${loser}`);
     return loser;
   }
 }

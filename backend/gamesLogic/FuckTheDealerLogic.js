@@ -51,7 +51,6 @@ class FuckTheDealerLogic {
       this.state.cardsLeft = card.remaining + 1;
     } else {
       this.state.cardsLeft = 0;
-      console.log("Game finished");
       this.state.status = "finished";
     }
   }
@@ -123,8 +122,6 @@ class FuckTheDealerLogic {
         ? guessedValue
         : Math.round(guessedValue / 2);
 
-    console.log("is smaller or bigger", this.state.isSmallerOrBigger);
-    console.log("drink amount", drinkAmount);
     this.state.isSmallerOrBigger = "firstGuess";
     this.state.message = `${this.state.guesser.username} guessed ${guessedValue} correctly. ${this.state.dealer.username} drink ${drinkAmount}!`;
 

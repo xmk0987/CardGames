@@ -86,9 +86,7 @@ class HorseTrackLogic {
       return;
     }
 
-    console.log(
-      `Horse ${selectedHorse} moved to position ${selected.position}`
-    );
+
     const randomMsg =
       MOVE_MESSAGES[Math.floor(Math.random() * MOVE_MESSAGES.length)];
     this.state.message = `${selectedHorse.toUpperCase()}: ${randomMsg}`;
@@ -108,9 +106,6 @@ class HorseTrackLogic {
         this.state.horses[toPullBack].position = Math.max(0, currentPos - 1);
 
         this.state.message = `${toPullBack.toUpperCase()} stumbled and moved back!`;
-        console.log(
-          `Horse ${toPullBack} moved from position ${currentPos} to ${this.state.horses[toPullBack].position} at checkpoint ${i}.`
-        );
 
         this.state.checkpointReached.push(i);
         break;
@@ -126,7 +121,6 @@ class HorseTrackLogic {
     }
 
     if (this.state.bets[player.id]) {
-      console.log(`Player ${player.username} has already placed a bet.`);
       return;
     }
 

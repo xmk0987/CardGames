@@ -5,6 +5,7 @@ const RECONNECT_GRACE_PERIOD = 5000;
 
 function registerLobbyHandlers(io, socket, { lobbies, socketToUser }) {
   socket.on("joinLobby", (lobbyId, userData) => {
+    console.log("Trying to join lobby", lobbyId, userData);
     if (!lobbyId || !userData?.id || !userData?.username) return;
 
     if (!lobbies.has(lobbyId)) {
@@ -90,7 +91,6 @@ function registerLobbyHandlers(io, socket, { lobbies, socketToUser }) {
       socketId: userData.socketId,
     };
 
-    console.log("Reconnect", reconnectedPlayer);
     lobby.set(userData.id, reconnectedPlayer);
     socketToUser.set(socket.id, { lobbyId: gameId, userId: userData.id });
 

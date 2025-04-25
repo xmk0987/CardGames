@@ -115,7 +115,6 @@ const returnAllCardsToDeck = async (deckId) => {
       axiosInstance.post(`${deckId}/return`)
     );
     if (response.success) {
-      console.log("Shuffling");
       return await shuffleDeck(deckId);
     }
     return response;

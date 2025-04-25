@@ -29,6 +29,7 @@ export const GameStateProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const fetchGameState = async () => {
     if (!gameId) throw new Error("No game ID provided.");
+
     const response = await axios.get(`${SERVER_URL}/game/${gameId}`);
     return response.data;
   };
@@ -54,7 +55,7 @@ export const GameStateProvider: React.FC<{ children: React.ReactNode }> = ({
 
   // Load player from localStorage
   useEffect(() => {
-    const savedPlayer = localStorage.getItem("userData");
+    const savedPlayer = localStorage.getItem("user");
     if (!savedPlayer) {
       navigate(`/lobby/${gameName}`);
       return;
@@ -82,11 +83,11 @@ export const GameStateProvider: React.FC<{ children: React.ReactNode }> = ({
 
     const handleSuccess = (data: { player: LobbyPlayer }) => {
       setPlayer(data.player);
-      localStorage.setItem("userData", JSON.stringify(data.player));
+      localStorage.setItem("user", JSON.stringify(data.player));
     };
 
     const handleFailure = () => {
-      localStorage.removeItem("userData");
+      localStorage.removeItem("user");
       navigate(`/lobby/${gameName}`);
     };
 

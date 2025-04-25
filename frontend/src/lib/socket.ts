@@ -10,5 +10,5 @@ if (!URL) {
 }
 
 export const socket: GameSocket = io(URL, {
-  autoConnect: true,
+  autoConnect: false,
 });
